@@ -1,0 +1,8 @@
+build/
+.gradle/
+out/
+
+.idea/
+.DS_Store
+
+**/application.conf
