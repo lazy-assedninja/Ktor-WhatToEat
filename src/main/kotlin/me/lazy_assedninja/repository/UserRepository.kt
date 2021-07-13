@@ -36,14 +36,14 @@ class UserRepository {
     suspend fun getUser(id: Int): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.id eq id }.firstOrNull()?.let { user ->
+                Users.select { Users.id eq id }.map { user ->
                     var googleAccount: GoogleAccount? = null
                     user[Users.googleAccountID]?.let {
                         googleAccount =
                             GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
                     }
                     toUser(user, googleAccount)
-                }
+                }.firstOrNull()
             }
         }
     }
@@ -51,14 +51,14 @@ class UserRepository {
     suspend fun getUser(email: String): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.email eq email }.firstOrNull()?.let { user ->
+                Users.select { Users.email eq email }.map { user ->
                     var googleAccount: GoogleAccount? = null
                     user[Users.googleAccountID]?.let {
                         googleAccount =
                             GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
                     }
                     toUser(user, googleAccount)
-                }
+                }.firstOrNull()
             }
         }
     }
@@ -66,14 +66,14 @@ class UserRepository {
     suspend fun getUserByGoogleAccountID(id: Int): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.googleAccountID eq id }.firstOrNull()?.let { user ->
+                Users.select { Users.googleAccountID eq id }.map { user ->
                     var googleAccount: GoogleAccount? = null
                     user[Users.googleAccountID]?.let {
                         googleAccount =
                             GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
                     }
                     toUser(user, googleAccount)
-                }
+                }.firstOrNull()
             }
         }
     }
