@@ -3,21 +3,30 @@ package me.lazy_assedninja.application
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.http.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.db.DataBaseFactory
-import me.lazy_assedninja.plugins.*
-import me.lazy_assedninja.routes.userRoute
+import me.lazy_assedninja.plugins.configureRouting
+import me.lazy_assedninja.routes.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
-
+@Suppress("unused")
+fun Application.module() {
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
             disableHtmlEscaping()
+        }
+    }
+    install(StatusPages) {
+        status(HttpStatusCode.NotFound, HttpStatusCode.InternalServerError) {
+            call.respond(mapOf("result" to "0", "message" to "${it.value} ${it.description}"))
+        }
+        exception<Throwable> {
+            call.respond(mapOf("result" to "0", "message" to it.message))
+            log.error("Throwable", it)
         }
     }
 

@@ -33,20 +33,47 @@ class UserRepository {
         }
     }
 
-    suspend fun get(id: Int): User? {
+    suspend fun getUser(id: Int): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.id eq id }.firstOrNull()?.let {
-                    toUser(it)
+                Users.select { Users.id eq id }.firstOrNull()?.let { user ->
+                    var googleAccount: GoogleAccount? = null
+                    user[Users.googleAccountID]?.let {
+                        googleAccount =
+                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
+                    }
+                    toUser(user, googleAccount)
                 }
             }
         }
     }
 
-    suspend fun getAll(): List<User> {
+    suspend fun getUser(email: String): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.selectAll().map { toUser(it) }.toList()
+                Users.select { Users.email eq email }.firstOrNull()?.let { user ->
+                    var googleAccount: GoogleAccount? = null
+                    user[Users.googleAccountID]?.let {
+                        googleAccount =
+                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
+                    }
+                    toUser(user, googleAccount)
+                }
+            }
+        }
+    }
+
+    suspend fun getUserByGoogleAccountID(id: Int): User? {
+        return withContext(Dispatchers.IO) {
+            transaction {
+                Users.select { Users.googleAccountID eq id }.firstOrNull()?.let { user ->
+                    var googleAccount: GoogleAccount? = null
+                    user[Users.googleAccountID]?.let {
+                        googleAccount =
+                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
+                    }
+                    toUser(user, googleAccount)
+                }
             }
         }
     }
@@ -59,7 +86,7 @@ class UserRepository {
                     it[password] = data.password
                     it[name] = data.name
                     it[headPortrait] = data.headPortrait
-                    it[updateTime] = updateTime
+                    it[updateTime] = DateTime.now()
                 }
             }
         }
@@ -71,27 +98,23 @@ class UserRepository {
         }
     }
 
-    private fun toUser(row: ResultRow): User {
-        var googleAccount: GoogleAccount? = null
-        row[Users.googleAccountID]?.let {
-            googleAccount = GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
-        }
+    private fun toUser(row: ResultRow, googleAccount: GoogleAccount?): User = User(
+        result = "1",
+        id = row[Users.id],
+        email = row[Users.email],
+        password = row[Users.password],
+        name = row[Users.name],
+        headPortrait = row[Users.headPortrait],
+        role = row[Users.role].name,
+        verificationCode = row[Users.verificationCode],
+        createTime = row[Users.createTime].toString(),
+        updateTime = row[Users.updateTime].toString(),
+        googleAccount = googleAccount
+    )
 
-        return User(
-            id = row[Users.id],
-            email = row[Users.email],
-            password = row[Users.password],
-            name = row[Users.name],
-            headPortrait = row[Users.headPortrait],
-            role = row[Users.role].name,
-            verificationCode = row[Users.verificationCode],
-            createTime = row[Users.createTime].toString(),
-            updateTime = row[Users.updateTime].toString(),
-            googleAccount = googleAccount
-        )
-    }
 
     private fun toGoogleAccount(row: ResultRow): GoogleAccount = GoogleAccount(
+        result = "1",
         id = row[GoogleAccounts.id],
         googleID = row[GoogleAccounts.googleID],
         email = row[GoogleAccounts.email],

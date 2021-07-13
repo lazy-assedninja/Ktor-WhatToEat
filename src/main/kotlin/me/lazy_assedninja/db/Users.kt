@@ -7,10 +7,10 @@ import org.jetbrains.exposed.sql.jodatime.datetime
 
 object Users : Table("users") {
     val id = integer("id").autoIncrement().index()
-    val email = text("email")
+    val email = text("email").index()
     val password = text("password")
     val name = text("name")
-    val headPortrait = text("head_portrait").nullable()
+    val headPortrait = text("head_portrait")
     val role = enumerationByName("role", 20, Role::class)
     val verificationCode = varchar("verification_code", 6).nullable()
     val createTime = datetime("create_time")

@@ -5,13 +5,14 @@ import me.lazy_assedninja.db.Users
 import me.lazy_assedninja.dto.GoogleAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.lazy_assedninja.dto.request.GoogleAccountRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 @Suppress("unused")
 class GoogleAccountRepository {
-    fun bind(userID: Int, data: GoogleAccount) {
+    fun bind(userID: Int, data: GoogleAccountRequest) {
         transaction {
             GoogleAccounts.insert {
                 it[googleID] = data.googleID
@@ -40,6 +41,16 @@ class GoogleAccountRepository {
         }
     }
 
+    suspend fun get(googleID: String): GoogleAccount? {
+        return withContext(Dispatchers.IO) {
+            transaction {
+                GoogleAccounts.select { GoogleAccounts.googleID eq googleID }.firstOrNull()?.let {
+                    toGoogleAccount(it)
+                }
+            }
+        }
+    }
+
     suspend fun getAll(): List<GoogleAccount> {
         return withContext(Dispatchers.IO) {
             transaction {
@@ -55,6 +66,7 @@ class GoogleAccountRepository {
     }
 
     private fun toGoogleAccount(row: ResultRow): GoogleAccount = GoogleAccount(
+        result = "1",
         id = row[GoogleAccounts.id],
         googleID = row[GoogleAccounts.googleID],
         email = row[GoogleAccounts.email],

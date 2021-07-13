@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GoogleAccount(
+    val result: String?,
+
     val id: Int,
     val googleID: String,
     val email: String,

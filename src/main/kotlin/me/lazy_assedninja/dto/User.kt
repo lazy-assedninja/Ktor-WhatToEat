@@ -4,15 +4,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
+    val result: String?,
+
     val id: Int,
     val email: String,
-    val password: String,
-    val name: String,
-    val headPortrait: String?,
+    var password: String,
+    var name: String,
+    var headPortrait: String,
     val role: String,
-    val verificationCode: String?,
+    var verificationCode: String?,
     val createTime: String?,
-    val updateTime: String?,
+    var updateTime: String?,
 
-    val googleAccount: GoogleAccount?
+    var googleAccount: GoogleAccount?
 )
