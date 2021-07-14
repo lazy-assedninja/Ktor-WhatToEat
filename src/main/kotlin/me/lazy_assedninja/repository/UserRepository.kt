@@ -36,14 +36,14 @@ class UserRepository {
     suspend fun getUser(id: Int): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.id eq id }.map { user ->
-                    var googleAccount: GoogleAccount? = null
-                    user[Users.googleAccountID]?.let {
-                        googleAccount =
-                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
-                    }
-                    toUser(user, googleAccount)
-                }.firstOrNull()
+                Users.leftJoin(GoogleAccounts)
+                    .select { Users.id eq id }
+                    .map { user ->
+                        val googleAccount = user[Users.googleAccountID]?.let { googleAccountID ->
+                            toGoogleAccount(user, googleAccountID)
+                        }
+                        toUser(user, googleAccount)
+                    }.firstOrNull()
             }
         }
     }
@@ -51,14 +51,14 @@ class UserRepository {
     suspend fun getUser(email: String): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.email eq email }.map { user ->
-                    var googleAccount: GoogleAccount? = null
-                    user[Users.googleAccountID]?.let {
-                        googleAccount =
-                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
-                    }
-                    toUser(user, googleAccount)
-                }.firstOrNull()
+                Users.leftJoin(GoogleAccounts)
+                    .select { Users.email eq email }
+                    .map { user ->
+                        val googleAccount = user[Users.googleAccountID]?.let { googleAccountID ->
+                            toGoogleAccount(user, googleAccountID)
+                        }
+                        toUser(user, googleAccount)
+                    }.firstOrNull()
             }
         }
     }
@@ -66,14 +66,14 @@ class UserRepository {
     suspend fun getUserByGoogleAccountID(id: Int): User? {
         return withContext(Dispatchers.IO) {
             transaction {
-                Users.select { Users.googleAccountID eq id }.map { user ->
-                    var googleAccount: GoogleAccount? = null
-                    user[Users.googleAccountID]?.let {
-                        googleAccount =
-                            GoogleAccounts.select { GoogleAccounts.id eq it }.map { toGoogleAccount(it) }.firstOrNull()
-                    }
-                    toUser(user, googleAccount)
-                }.firstOrNull()
+                Users.leftJoin(GoogleAccounts)
+                    .select { Users.googleAccountID eq id }
+                    .map { user ->
+                        val googleAccount = user[Users.googleAccountID]?.let { googleAccountID ->
+                            toGoogleAccount(user, googleAccountID)
+                        }
+                        toUser(user, googleAccount)
+                    }.firstOrNull()
             }
         }
     }
@@ -92,9 +92,9 @@ class UserRepository {
         }
     }
 
-    fun delete(data: User) {
+    fun delete(data: Int) {
         transaction {
-            Users.deleteWhere { Users.id eq data.id }
+            Users.deleteWhere { Users.id eq data }
         }
     }
 
@@ -113,9 +113,9 @@ class UserRepository {
     )
 
 
-    private fun toGoogleAccount(row: ResultRow): GoogleAccount = GoogleAccount(
+    private fun toGoogleAccount(row: ResultRow, googleAccountID: Int): GoogleAccount = GoogleAccount(
         result = "1",
-        id = row[GoogleAccounts.id],
+        id = googleAccountID,
         googleID = row[GoogleAccounts.googleID],
         email = row[GoogleAccounts.email],
         name = row[GoogleAccounts.name],
