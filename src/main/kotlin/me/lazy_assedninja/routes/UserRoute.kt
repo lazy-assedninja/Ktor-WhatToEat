@@ -31,7 +31,7 @@ fun Route.userRoute(
             val data = call.receive<GoogleAccountRequest>()
             val googleID = data.googleID
             val googleAccount = googleAccountRepository.get(googleID)
-            if(googleAccount != null)
+            if (googleAccount != null)
                 call.respond(mapOf("result" to "0", "message" to "Already been set to another account."))
 
             val userID = data.userID

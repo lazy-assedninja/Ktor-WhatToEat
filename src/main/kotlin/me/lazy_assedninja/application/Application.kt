@@ -6,9 +6,9 @@ import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import me.lazy_assedninja.routes.*
 import me.lazy_assedninja.db.DataBaseFactory
 import me.lazy_assedninja.plugins.configureRouting
-import me.lazy_assedninja.routes.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -38,7 +38,10 @@ fun Application.module() {
     val db = DataBaseFactory(user, password)
     db.init()
 
+    db.createTestData()
+
     routing {
         userRoute()
+        storeRoute()
     }
 }
