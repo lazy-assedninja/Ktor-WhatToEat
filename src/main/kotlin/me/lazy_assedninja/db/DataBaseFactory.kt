@@ -30,7 +30,7 @@ class DataBaseFactory(private val db: Database) {
 
         // Create used tables
         transaction {
-            SchemaUtils.create(Users, GoogleAccounts, Stores, Tags, Favorites, Comments, Posts)
+            SchemaUtils.create(Users, GoogleAccounts, Stores, Tags, Favorites, Comments, Posts, Reservations)
             addLogger(StdOutSqlLogger)
         }
     }

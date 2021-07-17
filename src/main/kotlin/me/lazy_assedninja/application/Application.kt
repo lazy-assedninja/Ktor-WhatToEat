@@ -43,5 +43,6 @@ fun Application.module() {
     routing {
         userRoute()
         storeRoute()
+        reservationRoute()
     }
 }
