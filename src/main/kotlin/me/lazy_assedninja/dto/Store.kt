@@ -17,6 +17,6 @@ data class Store(
     val createTime: String? = null,
     val updateTime: String? = null,
 
-    val tag: Tag? = null,
+    val tagName: String? = null,
     val isFavorite: Boolean? = null
 )

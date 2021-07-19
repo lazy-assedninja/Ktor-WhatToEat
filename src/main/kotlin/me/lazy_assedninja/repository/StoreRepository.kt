@@ -6,8 +6,10 @@ import me.lazy_assedninja.db.Favorites
 import me.lazy_assedninja.db.Stores
 import me.lazy_assedninja.db.Tags
 import me.lazy_assedninja.dto.Store
-import me.lazy_assedninja.dto.Tag
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
@@ -46,7 +48,7 @@ class StoreRepository {
                     .select { Stores.tagID eq tagID }
                     .map { store ->
                         val tag = store[Stores.tagID]?.let {
-                            toTag(store)
+                            store[Tags.name]
                         }
                         toStore(store, tag, store[Favorites.id] != null)
                     }.toList()
@@ -67,7 +69,7 @@ class StoreRepository {
                     .select { Stores.name like keyword }
                     .map { store ->
                         val tag = store[Stores.tagID]?.let {
-                            toTag(store)
+                            store[Tags.name]
                         }
                         toStore(store, tag, store[Favorites.id] != null)
                     }.toList()
@@ -75,7 +77,7 @@ class StoreRepository {
         }
     }
 
-    private fun toStore(row: ResultRow, tag: Tag?, isFavorite: Boolean? = false): Store = Store(
+    private fun toStore(row: ResultRow, tag: String?, isFavorite: Boolean? = false): Store = Store(
         id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
@@ -89,12 +91,7 @@ class StoreRepository {
         createTime = row[Stores.createTime].toString("yyyy-MM-dd"),
         updateTime = row[Stores.updateTime].toString("yyyy-MM-dd"),
 
-        tag = tag,
+        tagName = tag,
         isFavorite = isFavorite
-    )
-
-    private fun toTag(row: ResultRow): Tag = Tag(
-        id = row[Tags.id].value,
-        name = row[Tags.name],
     )
 }
