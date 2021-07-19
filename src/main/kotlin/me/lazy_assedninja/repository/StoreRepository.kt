@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
-@Suppress("unused", "SENSELESS_COMPARISON")
+@Suppress("SENSELESS_COMPARISON")
 class StoreRepository {
     fun insert(tagID: Int?, data: Store) {
         transaction {
@@ -57,15 +57,19 @@ class StoreRepository {
     suspend fun search(userID: Int, keyword: String): List<Store> {
         return withContext(Dispatchers.IO) {
             transaction {
-                Stores.join(
-                    Favorites,
-                    JoinType.LEFT,
-                    Stores.id,
-                    Favorites.storeID,
-                    additionalConstraint = { Favorites.userID eq userID })
+                Stores.leftJoin(Tags)
+                    .join(
+                        Favorites,
+                        JoinType.LEFT,
+                        Stores.id,
+                        Favorites.storeID,
+                        additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.name like keyword }
                     .map { store ->
-                        toStore(store, null, store[Favorites.id] != null)
+                        val tag = store[Stores.tagID]?.let {
+                            toTag(store)
+                        }
+                        toStore(store, tag, store[Favorites.id] != null)
                     }.toList()
             }
         }

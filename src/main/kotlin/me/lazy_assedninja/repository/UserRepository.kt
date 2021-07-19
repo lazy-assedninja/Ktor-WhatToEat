@@ -11,7 +11,6 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
-@Suppress("unused")
 class UserRepository {
     fun insert(data: User) {
         val roleValue = when (data.role) {

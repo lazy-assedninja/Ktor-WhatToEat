@@ -45,5 +45,6 @@ fun Application.module() {
         storeRoute()
         reservationRoute()
         promotionRoute()
+        favoriteRoute()
     }
 }
