@@ -47,5 +47,6 @@ fun Application.module() {
         promotionRoute()
         favoriteRoute()
         customServiceRoute()
+        fileRoute()
     }
 }
