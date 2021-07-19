@@ -33,7 +33,8 @@ class DataBaseFactory(private val db: Database) {
                 Comments,
                 Posts,
                 Reservations,
-                Promotions
+                Promotions,
+                Reports
             )
             addLogger(StdOutSqlLogger)
         }

@@ -94,7 +94,7 @@ class StoreRepository {
     )
 
     private fun toTag(row: ResultRow): Tag = Tag(
-        id = row[Tags.id],
+        id = row[Tags.id].value,
         name = row[Tags.name],
     )
 }
