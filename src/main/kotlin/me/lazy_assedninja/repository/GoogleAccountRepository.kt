@@ -5,16 +5,15 @@ import me.lazy_assedninja.db.Users
 import me.lazy_assedninja.dto.GoogleAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.dto.request.GoogleAccountRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 @Suppress("unused")
 class GoogleAccountRepository {
-    fun bind(userID: Int, data: GoogleAccountRequest) {
+    fun bind(userID: Int, data: GoogleAccount) {
         transaction {
-            GoogleAccounts.insert {
+            val googleAccountID = GoogleAccounts.insertAndGetId {
                 it[googleID] = data.googleID
                 it[email] = data.email
                 it[name] = data.name
@@ -22,21 +21,8 @@ class GoogleAccountRepository {
                 it[createTime] = DateTime.now()
                 it[updateTime] = DateTime.now()
             }
-            val googleAccountID = GoogleAccounts.slice(GoogleAccounts.id)
-                .select { GoogleAccounts.googleID eq data.googleID }
-                .first()[GoogleAccounts.id]
             Users.update({ Users.id eq userID }) {
-                it[Users.googleAccountID] = googleAccountID
-            }
-        }
-    }
-
-    suspend fun get(id: Int): GoogleAccount? {
-        return withContext(Dispatchers.IO) {
-            transaction {
-                GoogleAccounts.select { GoogleAccounts.id eq id }.firstOrNull()?.let {
-                    toGoogleAccount(it)
-                }
+                it[Users.googleAccountID] = googleAccountID.value
             }
         }
     }
@@ -51,23 +37,8 @@ class GoogleAccountRepository {
         }
     }
 
-    suspend fun getAll(): List<GoogleAccount> {
-        return withContext(Dispatchers.IO) {
-            transaction {
-                GoogleAccounts.selectAll().map { toGoogleAccount(it) }.toList()
-            }
-        }
-    }
-
-    fun delete(id: Int) {
-        transaction {
-            GoogleAccounts.deleteWhere { GoogleAccounts.id eq id }
-        }
-    }
-
     private fun toGoogleAccount(row: ResultRow): GoogleAccount = GoogleAccount(
-        result = "1",
-        id = row[GoogleAccounts.id],
+        id = row[GoogleAccounts.id].value,
         googleID = row[GoogleAccounts.googleID],
         email = row[GoogleAccounts.email],
         name = row[GoogleAccounts.name],

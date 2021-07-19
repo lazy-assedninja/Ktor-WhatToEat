@@ -43,8 +43,6 @@ class DataBaseFactory(private val db: Database) {
 
         userRepository.insert(
             User(
-                result = null,
-
                 id = 0,
                 email = "test1@gmail.com",
                 name = "test1",
@@ -60,8 +58,6 @@ class DataBaseFactory(private val db: Database) {
         )
         userRepository.insert(
             User(
-                result = null,
-
                 id = 0,
                 email = "test2@gmail.com",
                 name = "test2",

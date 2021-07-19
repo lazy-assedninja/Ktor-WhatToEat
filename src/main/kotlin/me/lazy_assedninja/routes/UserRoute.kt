@@ -5,6 +5,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.dto.GoogleAccount
+import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.dto.User
 import me.lazy_assedninja.dto.request.GoogleAccountRequest
 import me.lazy_assedninja.dto.request.UserRequest
@@ -23,24 +24,28 @@ fun Route.userRoute(
                 userRepository.insert(data)
                 call.respond(mapOf("result" to "1"))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Email address already exist."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Email address already exist."))
             }
         }
 
         post("BindGoogleAccount") {
-            val data = call.receive<GoogleAccountRequest>()
+            val data = call.receive<GoogleAccount>()
             val googleID = data.googleID
-            val googleAccount = googleAccountRepository.get(googleID)
-            if (googleAccount != null)
-                call.respond(mapOf("result" to "0", "message" to "Already been set to another account."))
+            val checkIfExist = googleAccountRepository.get(googleID)
+            if (checkIfExist != null)
+                call.respond(mapOf("result" to "0", "errorMessage" to "Already been set to another account."))
 
             val userID = data.userID
-            val user = userRepository.getUser(userID)
-            if (user != null) {
-                googleAccountRepository.bind(user.id, data)
-                call.respond(mapOf("result" to "1"))
+            if (userID != null) {
+                val user = userRepository.getUser(userID)
+                if (user != null) {
+                    googleAccountRepository.bind(user.id, data)
+                    call.respond(mapOf("result" to "1"))
+                } else {
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -52,28 +57,30 @@ fun Route.userRoute(
                 val user = userRepository.getUser(email)
                 if (user != null) {
                     if (user.password == password) {
-                        call.respond(user)
+                        call.respond(Response(result = 1, body = user))
                     } else {
-                        call.respond(mapOf("result" to "0", "message" to "Password wrong."))
+                        call.respond(mapOf("result" to "0", "errorMessage" to "Password wrong."))
                     }
                 } else {
-                    call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
                 }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
         post("GoogleLogin") {
             val data = call.receive<GoogleAccountRequest>()
             val googleID = data.googleID
-            val googleAccount = googleAccountRepository.get(googleID)
-            if (googleAccount != null) {
-                userRepository.getUserByGoogleAccountID(googleAccount.id)?.let {
-                    call.respond(it)
+            if (googleID != null) {
+                val user = userRepository.getUserByGoogleAccountID(googleID)
+                if (user != null) {
+                    call.respond(Response(result = 1, body = user))
+                } else {
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
                 }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -90,13 +97,13 @@ fun Route.userRoute(
                         userRepository.update(user)
                         call.respond(mapOf("result" to "1"))
                     } else {
-                        call.respond(mapOf("result" to "0", "message" to "Password wrong."))
+                        call.respond(mapOf("result" to "0", "errorMessage" to "Password wrong."))
                     }
                 } else {
-                    call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
                 }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -106,7 +113,7 @@ fun Route.userRoute(
             if (email != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -118,7 +125,7 @@ fun Route.userRoute(
             if (email != null && verificationCode != null && newPassword != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -128,7 +135,7 @@ fun Route.userRoute(
             if (email != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -143,10 +150,10 @@ fun Route.userRoute(
                     userRepository.update(user)
                     call.respond(mapOf("result" to "1"))
                 } else {
-                    call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
                 }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -163,25 +170,10 @@ fun Route.userRoute(
                         )
                     )
                 } else {
-                    call.respond(mapOf("result" to "0", "message" to "User Not Found."))
+                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
                 }
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
-            }
-        }
-
-        post("Get") {
-            val data = call.receive<UserRequest>()
-            val id = data.id
-            if (id != null) {
-                val user = userRepository.getUser(id.toInt())
-                if (user != null) {
-                    call.respond(user)
-                } else {
-                    call.respond(mapOf("result" to "0", "message" to "User Not Found."))
-                }
-            } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
     }

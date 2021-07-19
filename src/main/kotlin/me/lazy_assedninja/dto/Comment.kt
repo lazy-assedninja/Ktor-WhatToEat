@@ -9,6 +9,8 @@ data class Comment(
     val content: String,
     val createTime: String,
 
-    val userName: String,
-    val userPicture: String
+    val storeID: Int,
+    val userID: Int,
+    val userName: String?,
+    val userPicture: String?
 )

@@ -2,15 +2,19 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.*
+import me.lazy_assedninja.db.Reservations
+import me.lazy_assedninja.db.Stores
+import me.lazy_assedninja.db.Users
 import me.lazy_assedninja.dto.Reservation
-import me.lazy_assedninja.dto.request.ReservationRequest
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class ReservationRepository {
-    fun insert(userID: Int, storeID: Int, data: Reservation) {
+    fun insert(data: Reservation) {
         transaction {
             Reservations.insert {
                 it[name] = data.name
@@ -20,8 +24,8 @@ class ReservationRepository {
                 it[createTime] = DateTime.now()
                 it[updateTime] = DateTime.now()
 
-                it[Reservations.userID] = userID
-                it[Reservations.storeID] = storeID
+                it[userID] = data.userID
+                it[storeID] = data.storeID
             }
         }
     }
@@ -53,7 +57,7 @@ class ReservationRepository {
     }
 
     private fun toUserReservation(row: ResultRow): Reservation = Reservation(
-        id = row[Reservations.id],
+        id = row[Reservations.id].value,
         name = row[Reservations.phone],
         phone = row[Reservations.phone],
         amount = row[Reservations.amount],
@@ -61,11 +65,13 @@ class ReservationRepository {
         createTime = row[Reservations.createTime].toString(),
         updateTime = row[Reservations.updateTime].toString(),
 
+        storeID = row[Reservations.storeID],
         storeName = row[Stores.name],
+        userID = row[Reservations.userID]
     )
 
     private fun toStoreReservation(row: ResultRow): Reservation = Reservation(
-        id = row[Reservations.id],
+        id = row[Reservations.id].value,
         name = row[Reservations.phone],
         phone = row[Reservations.phone],
         amount = row[Reservations.amount],
@@ -73,6 +79,8 @@ class ReservationRepository {
         createTime = row[Reservations.createTime].toString(),
         updateTime = row[Reservations.updateTime].toString(),
 
-        userName = row[Users.name],
+        storeID = row[Reservations.storeID],
+        userID = row[Reservations.userID],
+        userName = row[Users.name]
     )
 }

@@ -1,11 +1,10 @@
 package me.lazy_assedninja.db
 
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Stores : Table("stores") {
-    val id = integer("id").autoIncrement().index()
+object Stores : IntIdTable() {
     val placeID = text("place_id")
     val name = text("name")
     val address = text("address")

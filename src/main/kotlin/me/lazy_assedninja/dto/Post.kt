@@ -7,5 +7,7 @@ data class Post(
     val id: Int,
     val title: String,
     val content: String,
-    val createTime: String
+    val createTime: String,
+
+    val storeID: Int
 )

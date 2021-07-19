@@ -13,7 +13,7 @@ import org.joda.time.DateTime
 
 @Suppress("unused", "SENSELESS_COMPARISON")
 class StoreRepository {
-    fun insert(tag: Int?, data: Store) {
+    fun insert(tagID: Int?, data: Store) {
         transaction {
             Stores.insert {
                 it[placeID] = data.placeID
@@ -28,22 +28,7 @@ class StoreRepository {
                 it[createTime] = DateTime.now()
                 it[updateTime] = DateTime.now()
 
-                it[tagID] = tag
-            }
-        }
-    }
-
-    suspend fun get(storeID: Int): Store? {
-        return withContext(Dispatchers.IO) {
-            transaction {
-                Stores.leftJoin(Tags)
-                    .select { Stores.id eq storeID }
-                    .map { store ->
-                        val tag = store[Stores.tagID]?.let {
-                            toTag(store)
-                        }
-                        toStore(store, tag)
-                    }.firstOrNull()
+                it[Stores.tagID] = tagID
             }
         }
     }
@@ -86,15 +71,8 @@ class StoreRepository {
         }
     }
 
-    fun delete(id: Int) {
-        transaction {
-            Stores.deleteWhere { Stores.id eq id }
-        }
-    }
-
     private fun toStore(row: ResultRow, tag: Tag?, isFavorite: Boolean? = false): Store = Store(
-        result = "1",
-        id = row[Stores.id],
+        id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
         address = row[Stores.address],

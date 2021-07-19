@@ -6,14 +6,12 @@ import me.lazy_assedninja.db.Comments
 import me.lazy_assedninja.db.Stores
 import me.lazy_assedninja.db.Users
 import me.lazy_assedninja.dto.Comment
-import me.lazy_assedninja.dto.request.CommentRequest
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class CommentRepository {
-    fun insert(data: CommentRequest) {
+    fun insert(data: Comment) {
         transaction {
             Comments.insert {
                 it[userID] = data.userID
@@ -23,8 +21,11 @@ class CommentRepository {
                 it[createTime] = DateTime.now()
             }
             val starAverage =
-                Comments.innerJoin(Stores).slice(Stores.id, Comments.star.avg())
-                    .select { Stores.id eq data.storeID }.groupBy(Stores.id).map {
+                Comments.innerJoin(Stores)
+                    .slice(Stores.id, Comments.star.avg())
+                    .select { Stores.id eq data.storeID }
+                    .groupBy(Stores.id)
+                    .map {
                         it[Comments.star.avg()]
                     }.singleOrNull()
             starAverage?.let {
@@ -48,11 +49,14 @@ class CommentRepository {
     }
 
     private fun toComment(row: ResultRow): Comment = Comment(
-        id = row[Comments.id],
-        userName = row[Users.name],
-        userPicture = row[Users.headPortrait],
+        id = row[Comments.id].value,
         star = row[Comments.star],
         content = row[Comments.content],
-        createTime = row[Comments.createTime].toString()
+        createTime = row[Comments.createTime].toString(),
+
+        storeID = row[Comments.storeID],
+        userID = row[Users.id].value,
+        userName = row[Users.name],
+        userPicture = row[Users.headPortrait],
     )
 }

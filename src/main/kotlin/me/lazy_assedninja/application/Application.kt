@@ -22,10 +22,10 @@ fun Application.module() {
     }
     install(StatusPages) {
         status(HttpStatusCode.NotFound, HttpStatusCode.InternalServerError) {
-            call.respond(mapOf("result" to "0", "message" to "${it.value} ${it.description}"))
+            call.respond(mapOf("result" to "0", "errorMessage" to "${it.value} ${it.description}"))
         }
         exception<Throwable> {
-            call.respond(mapOf("result" to "0", "message" to it.message))
+            call.respond(mapOf("result" to "0", "errorMessage" to it.message))
             log.error("Throwable", it)
         }
     }

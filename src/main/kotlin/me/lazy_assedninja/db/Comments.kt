@@ -1,11 +1,10 @@
 package me.lazy_assedninja.db
 
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Comments : Table() {
-    val id = integer("id").autoIncrement().index()
+object Comments : IntIdTable() {
     val star = float("start")
     val content = text("content")
     val createTime = datetime("create_time")

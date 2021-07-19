@@ -2,20 +2,16 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Comments
 import me.lazy_assedninja.db.Posts
-import me.lazy_assedninja.db.Users
 import me.lazy_assedninja.dto.Post
-import me.lazy_assedninja.dto.request.PostRequest
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
 class PostRepository {
-    fun insert(data: PostRequest) {
+    fun insert(data: Post) {
         transaction {
             Posts.insert {
                 it[storeID] = data.storeID
@@ -39,9 +35,11 @@ class PostRepository {
     }
 
     private fun toPost(row: ResultRow): Post = Post(
-        id = row[Posts.id],
+        id = row[Posts.id].value,
         title = row[Posts.title],
         content = row[Posts.content],
-        createTime = row[Posts.createTime].toString()
+        createTime = row[Posts.createTime].toString(),
+
+        storeID = row[Posts.storeID]
     )
 }

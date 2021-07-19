@@ -5,22 +5,16 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.dto.Reservation
+import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.dto.request.ReservationRequest
 import me.lazy_assedninja.repository.ReservationRepository
 
 fun Route.reservationRoute(reservationRepository: ReservationRepository = ReservationRepository()) {
     route("/Reservation") {
         post("CreateReservation") {
-            val data = call.receive<ReservationRequest>()
-            val userID = data.userID
-            val storeID = data.storeID
-            val reservation = data.reservation
-            if (userID != null && storeID != null && reservation != null) {
-                reservationRepository.insert(userID, storeID, reservation)
-                call.respond(mapOf("result" to "1"))
-            } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
-            }
+            val data = call.receive<Reservation>()
+            reservationRepository.insert(data)
+            call.respond(mapOf("result" to "1"))
         }
 
         post("GetReservationList") {
@@ -29,9 +23,9 @@ fun Route.reservationRoute(reservationRepository: ReservationRepository = Reserv
             val id = data.id
             if (type != null && id != null) {
                 val reservations = reservationRepository.getAll(type, id)
-                call.respond(reservations)
+                call.respond(Response(result = 1, body = reservations))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
@@ -44,7 +38,7 @@ fun Route.reservationRoute(reservationRepository: ReservationRepository = Reserv
                 reservationRepository.delete(id)
                 call.respond(mapOf("result" to "1"))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
     }

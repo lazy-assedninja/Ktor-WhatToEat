@@ -4,8 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Store(
-    val result: String? = null,
-
     val id: Int,
     val placeID: String,
     val name: String,

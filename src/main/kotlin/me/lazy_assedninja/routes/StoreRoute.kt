@@ -4,6 +4,9 @@ import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import me.lazy_assedninja.dto.Comment
+import me.lazy_assedninja.dto.Post
+import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.dto.request.CommentRequest
 import me.lazy_assedninja.dto.request.PostRequest
 import me.lazy_assedninja.dto.request.StoreRequest
@@ -24,26 +27,26 @@ fun Route.storeRoute(
             val tagID = data.tagID
             if (userID != null && tagID != null) {
                 val stores = storeRepository.getAll(userID, tagID)
-                call.respond(stores)
+                call.respond(Response(result = 1, body = stores))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
         post("Search") {
             val data = call.receive<StoreRequest>()
             val userID = data.userID
-            val keyword = "%${data.keyword}%"
-            if (userID != null) {
-                val stores = storeRepository.search(userID, keyword)
-                call.respond(stores)
+            val keyword = data.keyword
+            if (userID != null && keyword != null) {
+                val stores = storeRepository.search(userID, "%${keyword}%")
+                call.respond(Response(result = 1, body = stores))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
         post("CreateComment") {
-            val data = call.receive<CommentRequest>()
+            val data = call.receive<Comment>()
             commentRepository.insert(data)
             call.respond(mapOf("result" to "1"))
         }
@@ -53,14 +56,14 @@ fun Route.storeRoute(
             val storeID = data.storeID
             if (storeID != null) {
                 val comments = commentRepository.getAll(storeID)
-                call.respond(comments)
+                call.respond(Response(result = 1, body = comments))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
 
         post("CreatePost") {
-            val data = call.receive<PostRequest>()
+            val data = call.receive<Post>()
             postRepository.insert(data)
             call.respond(mapOf("result" to "1"))
         }
@@ -70,9 +73,9 @@ fun Route.storeRoute(
             val storeID = data.storeID
             if (storeID != null) {
                 val posts = postRepository.getAll(storeID)
-                call.respond(posts)
+                call.respond(Response(result = 1, body = posts))
             } else {
-                call.respond(mapOf("result" to "0", "message" to "Data can't be empty."))
+                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
             }
         }
     }

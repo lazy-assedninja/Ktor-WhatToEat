@@ -3,7 +3,7 @@ package me.lazy_assedninja.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Tag(
-    val id: Int,
-    val name: String
+data class Response<T>(
+    val result: Int,
+    val body: T
 )

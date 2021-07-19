@@ -63,11 +63,11 @@ class UserRepository {
         }
     }
 
-    suspend fun getUserByGoogleAccountID(id: Int): User? {
+    suspend fun getUserByGoogleAccountID(googleID: String): User? {
         return withContext(Dispatchers.IO) {
             transaction {
                 Users.leftJoin(GoogleAccounts)
-                    .select { Users.googleAccountID eq id }
+                    .select { GoogleAccounts.googleID eq googleID }
                     .map { user ->
                         val googleAccount = user[Users.googleAccountID]?.let { googleAccountID ->
                             toGoogleAccount(user, googleAccountID)
@@ -92,35 +92,28 @@ class UserRepository {
         }
     }
 
-    fun delete(data: Int) {
-        transaction {
-            Users.deleteWhere { Users.id eq data }
-        }
-    }
-
     private fun toUser(row: ResultRow, googleAccount: GoogleAccount?): User = User(
-        result = "1",
-        id = row[Users.id],
+        id = row[Users.id].value,
         email = row[Users.email],
         password = row[Users.password],
         name = row[Users.name],
         headPortrait = row[Users.headPortrait],
         role = row[Users.role].name,
         verificationCode = row[Users.verificationCode],
-        createTime = row[Users.createTime].toString(),
-        updateTime = row[Users.updateTime].toString(),
+        createTime = row[Users.createTime].toString("yyyy-MM-dd"),
+        updateTime = row[Users.updateTime].toString("yyyy-MM-dd"),
+
         googleAccount = googleAccount
     )
 
 
     private fun toGoogleAccount(row: ResultRow, googleAccountID: Int): GoogleAccount = GoogleAccount(
-        result = "1",
         id = googleAccountID,
         googleID = row[GoogleAccounts.googleID],
         email = row[GoogleAccounts.email],
         name = row[GoogleAccounts.name],
         pictureURL = row[GoogleAccounts.pictureURL],
-        createTime = row[GoogleAccounts.createTime].toString(),
-        updateTime = row[GoogleAccounts.updateTime].toString()
+        createTime = row[GoogleAccounts.createTime].toString("yyyy-MM-dd"),
+        updateTime = row[GoogleAccounts.updateTime].toString("yyyy-MM-dd")
     )
 }

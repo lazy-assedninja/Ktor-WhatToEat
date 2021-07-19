@@ -12,6 +12,8 @@ data class Reservation(
     val createTime: String,
     val updateTime: String,
 
+    val storeID: Int,
     val storeName: String? = null,
+    val userID:Int,
     val userName: String? = null
 )
