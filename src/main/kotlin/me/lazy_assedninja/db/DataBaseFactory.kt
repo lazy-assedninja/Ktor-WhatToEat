@@ -1,13 +1,7 @@
 package me.lazy_assedninja.db
 
-import me.lazy_assedninja.dto.Favorite
-import me.lazy_assedninja.dto.Store
-import me.lazy_assedninja.dto.Tag
-import me.lazy_assedninja.dto.User
-import me.lazy_assedninja.repository.FavoriteRepository
-import me.lazy_assedninja.repository.StoreRepository
-import me.lazy_assedninja.repository.TagRepository
-import me.lazy_assedninja.repository.UserRepository
+import me.lazy_assedninja.dto.*
+import me.lazy_assedninja.repository.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -30,7 +24,17 @@ class DataBaseFactory(private val db: Database) {
 
         // Create used tables
         transaction {
-            SchemaUtils.create(Users, GoogleAccounts, Stores, Tags, Favorites, Comments, Posts, Reservations)
+            SchemaUtils.create(
+                Users,
+                GoogleAccounts,
+                Stores,
+                Tags,
+                Favorites,
+                Comments,
+                Posts,
+                Reservations,
+                Promotions
+            )
             addLogger(StdOutSqlLogger)
         }
     }
@@ -40,6 +44,7 @@ class DataBaseFactory(private val db: Database) {
         val storeRepository = StoreRepository()
         val tagRepository = TagRepository()
         val favoriteRepository = FavoriteRepository()
+        val promotionRepository = PromotionRepository()
 
         userRepository.insert(
             User(
@@ -150,6 +155,30 @@ class DataBaseFactory(private val db: Database) {
                 id = 0,
                 userID = 2,
                 storeID = 2,
+            )
+        )
+        promotionRepository.insert(
+            Promotion(
+                id = 0,
+                title = "test1",
+                picture = "picture/path",
+                discount = "80% off",
+                notice = "僅限內用",
+                deadline = "2021/07/19 08:00",
+
+                storeID = 1
+            )
+        )
+        promotionRepository.insert(
+            Promotion(
+                id = 0,
+                title = "test1",
+                picture = "picture/path",
+                discount = "80% off",
+                notice = "僅限內用",
+                deadline = "2021/07/19 08:00",
+
+                storeID = 1
             )
         )
     }
