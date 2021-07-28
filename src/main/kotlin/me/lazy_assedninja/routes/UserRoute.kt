@@ -157,7 +157,7 @@ fun Route.userRoute(
             }
         }
 
-        post("GetPicture") {
+        post("GetHeadPortrait") {
             val data = call.receive<UserRequest>()
             val email = data.email
             if (email != null) {
