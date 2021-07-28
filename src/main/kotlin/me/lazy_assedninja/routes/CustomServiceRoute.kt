@@ -5,7 +5,6 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.dto.Report
-import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.repository.CustomServiceRepository
 
 fun Route.customServiceRoute(customServiceRepository: CustomServiceRepository = CustomServiceRepository()) {
@@ -18,7 +17,7 @@ fun Route.customServiceRoute(customServiceRepository: CustomServiceRepository = 
 
         get("GetReportList") {
             val reports = customServiceRepository.getAllReports()
-            call.respond(Response(result = 1, body = reports))
+            call.respond(reports)
         }
     }
 }

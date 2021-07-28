@@ -24,7 +24,7 @@ fun Route.fileRoute() {
                     File("image/$fileName").writeBytes(fileBytes)
                 }
             }
-            call.respond(call.respond(mapOf("result" to "1")))
+            call.respond(call.respond(mapOf("result" to "Success.")))
         }
     }
 }

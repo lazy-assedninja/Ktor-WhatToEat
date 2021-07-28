@@ -1,11 +1,11 @@
 package me.lazy_assedninja.routes
 
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.dto.GoogleAccount
-import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.dto.User
 import me.lazy_assedninja.dto.request.GoogleAccountRequest
 import me.lazy_assedninja.dto.request.UserRequest
@@ -22,9 +22,9 @@ fun Route.userRoute(
             val checkIfExist = userRepository.getUser(data.email) == null
             if (checkIfExist) {
                 userRepository.insert(data)
-                call.respond(mapOf("result" to "1"))
+                call.respond(mapOf("result" to "Success."))
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Email address already exist."))
+                call.respond(HttpStatusCode.InternalServerError, "Email address already exist.")
             }
         }
 
@@ -33,19 +33,19 @@ fun Route.userRoute(
             val googleID = data.googleID
             val checkIfExist = googleAccountRepository.get(googleID)
             if (checkIfExist != null)
-                call.respond(mapOf("result" to "0", "errorMessage" to "Already been set to another account."))
+                call.respond(HttpStatusCode.InternalServerError, "Already been set to another account.")
 
             val userID = data.userID
             if (userID != null) {
                 val user = userRepository.getUser(userID)
                 if (user != null) {
                     googleAccountRepository.bind(user.id, data)
-                    call.respond(mapOf("result" to "1"))
+                    call.respond(mapOf("result" to "Success."))
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -57,15 +57,15 @@ fun Route.userRoute(
                 val user = userRepository.getUser(email)
                 if (user != null) {
                     if (user.password == password) {
-                        call.respond(Response(result = 1, body = user))
+                        call.respond(user)
                     } else {
-                        call.respond(mapOf("result" to "0", "errorMessage" to "Password wrong."))
+                        call.respond(HttpStatusCode.InternalServerError, "Password wrong.")
                     }
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -75,12 +75,12 @@ fun Route.userRoute(
             if (googleID != null) {
                 val user = userRepository.getUserByGoogleAccountID(googleID)
                 if (user != null) {
-                    call.respond(Response(result = 1, body = user))
+                    call.respond(user)
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -95,15 +95,15 @@ fun Route.userRoute(
                     if (user.password == oldPassword) {
                         user.password = newPassword
                         userRepository.update(user)
-                        call.respond(mapOf("result" to "1"))
+                        call.respond(mapOf("result" to "Success."))
                     } else {
-                        call.respond(mapOf("result" to "0", "errorMessage" to "Password wrong."))
+                        call.respond(HttpStatusCode.InternalServerError, "Password wrong.")
                     }
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -113,7 +113,7 @@ fun Route.userRoute(
             if (email != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -125,7 +125,7 @@ fun Route.userRoute(
             if (email != null && verificationCode != null && newPassword != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -135,7 +135,7 @@ fun Route.userRoute(
             if (email != null) {
                 // ...
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -148,12 +148,12 @@ fun Route.userRoute(
                 if (user != null) {
                     user.headPortrait = picturePath
                     userRepository.update(user)
-                    call.respond(mapOf("result" to "1"))
+                    call.respond(mapOf("result" to "Success."))
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -165,15 +165,14 @@ fun Route.userRoute(
                 if (user != null) {
                     call.respond(
                         mapOf(
-                            "result" to "1",
                             "headPortrait" to "https://${call.request.local.host}:${call.request.local.port}/${user.headPortrait}"
                         )
                     )
                 } else {
-                    call.respond(mapOf("result" to "0", "errorMessage" to "User Not Found."))
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
     }

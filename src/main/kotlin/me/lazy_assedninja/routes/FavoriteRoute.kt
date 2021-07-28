@@ -1,11 +1,11 @@
 package me.lazy_assedninja.routes
 
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.dto.Favorite
-import me.lazy_assedninja.dto.Response
 import me.lazy_assedninja.dto.request.FavoriteRequest
 import me.lazy_assedninja.repository.FavoriteRepository
 
@@ -14,7 +14,7 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
         post("AddToFavorites") {
             val data = call.receive<Favorite>()
             favoriteRepository.insert(data)
-            call.respond(mapOf("result" to "1"))
+            call.respond(mapOf("result" to "Success."))
         }
 
         post("GetFavoriteList") {
@@ -22,9 +22,9 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
             val userID = data.userID
             if (userID != null) {
                 val stores = favoriteRepository.getAll(userID)
-                call.respond(Response(result = 1, body = stores))
+                call.respond(stores)
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
@@ -34,9 +34,9 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
             val userID = data.userID
             if (storeID != null && userID != null) {
                 favoriteRepository.delete(storeID, userID)
-                call.respond(mapOf("result" to "1"))
+                call.respond(mapOf("result" to "Success."))
             } else {
-                call.respond(mapOf("result" to "0", "errorMessage" to "Data can't be empty."))
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
     }

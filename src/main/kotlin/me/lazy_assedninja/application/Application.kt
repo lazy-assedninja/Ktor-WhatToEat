@@ -20,13 +20,10 @@ fun Application.module() {
             disableHtmlEscaping()
         }
     }
+    install(DefaultHeaders)
     install(StatusPages) {
-        status(HttpStatusCode.NotFound, HttpStatusCode.InternalServerError) {
-            call.respond(mapOf("result" to "0", "errorMessage" to "${it.value} ${it.description}"))
-        }
         exception<Throwable> {
-            call.respond(mapOf("result" to "0", "errorMessage" to it.message))
-            log.error("Throwable", it)
+            call.respond(HttpStatusCode.InternalServerError, "${it.message}")
         }
     }
 
@@ -38,6 +35,7 @@ fun Application.module() {
     val db = DataBaseFactory(user, password)
     db.init()
 
+    // Test Data
     db.createTestData()
 
     routing {
