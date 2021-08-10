@@ -91,6 +91,7 @@ class StoreRepository {
         createTime = row[Stores.createTime].toString("yyyy-MM-dd"),
         updateTime = row[Stores.updateTime].toString("yyyy-MM-dd"),
 
+        tagID = row[Stores.tagID],
         tagName = tag,
         isFavorite = isFavorite
     )
