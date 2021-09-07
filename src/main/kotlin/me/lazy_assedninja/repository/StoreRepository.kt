@@ -46,12 +46,8 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.tagID eq tagID }
-                    .map { store ->
-                        val tag = store[Stores.tagID]?.let {
-                            store[Tags.name]
-                        }
-                        toStore(store, tag, store[Favorites.id] != null)
-                    }.toList()
+                    .map { store -> toStore(store, store[Favorites.id] != null) }
+                    .toList()
             }
         }
     }
@@ -67,17 +63,13 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.name like keyword }
-                    .map { store ->
-                        val tag = store[Stores.tagID]?.let {
-                            store[Tags.name]
-                        }
-                        toStore(store, tag, store[Favorites.id] != null)
-                    }.toList()
+                    .map { store -> toStore(store, store[Favorites.id] != null) }
+                    .toList()
             }
         }
     }
 
-    private fun toStore(row: ResultRow, tag: String?, isFavorite: Boolean? = false): Store = Store(
+    private fun toStore(row: ResultRow, isFavorite: Boolean? = false): Store = Store(
         id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
@@ -91,8 +83,6 @@ class StoreRepository {
         createTime = row[Stores.createTime].toString("yyyy-MM-dd"),
         updateTime = row[Stores.updateTime].toString("yyyy-MM-dd"),
 
-        tagID = row[Stores.tagID],
-        tagName = tag,
         isFavorite = isFavorite
     )
 }

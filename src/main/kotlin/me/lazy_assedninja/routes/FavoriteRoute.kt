@@ -11,7 +11,7 @@ import me.lazy_assedninja.repository.FavoriteRepository
 
 fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteRepository()) {
     route("/Favorite") {
-        post("AddToFavorites") {
+        post("AddToFavorite") {
             val data = call.receive<Favorite>()
             favoriteRepository.insert(data)
             call.respond(mapOf("result" to "Success."))
@@ -28,7 +28,7 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
             }
         }
 
-        post("DeleteFavorite") {
+        post("CancelFavorite") {
             val data = call.receive<FavoriteRequest>()
             val storeID = data.storeID
             val userID = data.userID
