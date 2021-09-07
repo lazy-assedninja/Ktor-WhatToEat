@@ -103,7 +103,6 @@ class UserRepository {
         createTime = row[Users.createTime].toString("yyyy-MM-dd"),
         updateTime = row[Users.updateTime].toString("yyyy-MM-dd"),
 
-        isBounded = googleAccount == null,
         googleAccount = googleAccount
     )
 

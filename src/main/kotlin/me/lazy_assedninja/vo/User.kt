@@ -15,6 +15,5 @@ data class User(
     val createTime: String?,
     var updateTime: String?,
 
-    var isBounded: Boolean,
     var googleAccount: GoogleAccount?
 )
