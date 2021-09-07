@@ -1,9 +1,10 @@
-package me.lazy_assedninja.dto
+package me.lazy_assedninja.vo
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Store(
+
     val id: Int,
     val placeID: String,
     val name: String,

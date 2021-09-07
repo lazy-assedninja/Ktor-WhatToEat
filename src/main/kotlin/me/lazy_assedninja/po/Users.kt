@@ -1,4 +1,4 @@
-package me.lazy_assedninja.db
+package me.lazy_assedninja.po
 
 import me.lazy_assedninja.vo.Role
 import org.jetbrains.exposed.dao.id.IntIdTable
@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
 object Users : IntIdTable() {
+
     val email = text("email").index()
     val password = text("password")
     val name = text("name")

@@ -5,11 +5,11 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import me.lazy_assedninja.dto.Comment
-import me.lazy_assedninja.dto.Post
-import me.lazy_assedninja.dto.request.CommentRequest
-import me.lazy_assedninja.dto.request.PostRequest
-import me.lazy_assedninja.dto.request.StoreRequest
+import me.lazy_assedninja.vo.Comment
+import me.lazy_assedninja.vo.Post
+import me.lazy_assedninja.dto.CommentDTO
+import me.lazy_assedninja.dto.PostDTO
+import me.lazy_assedninja.dto.StoreDTO
 import me.lazy_assedninja.repository.CommentRepository
 import me.lazy_assedninja.repository.PostRepository
 import me.lazy_assedninja.repository.StoreRepository
@@ -20,9 +20,10 @@ fun Route.storeRoute(
     commentRepository: CommentRepository = CommentRepository(),
     postRepository: PostRepository = PostRepository()
 ) {
+
     route("/Store") {
         post("GetStoreList") {
-            val data = call.receive<StoreRequest>()
+            val data = call.receive<StoreDTO>()
             val userID = data.userID
             val tagID = data.tagID
             if (userID != null && tagID != null) {
@@ -34,7 +35,7 @@ fun Route.storeRoute(
         }
 
         post("Search") {
-            val data = call.receive<StoreRequest>()
+            val data = call.receive<StoreDTO>()
             val userID = data.userID
             val keyword = data.keyword
             if (userID != null && keyword != null) {
@@ -52,7 +53,7 @@ fun Route.storeRoute(
         }
 
         post("GetCommentList") {
-            val data = call.receive<CommentRequest>()
+            val data = call.receive<CommentDTO>()
             val storeID = data.storeID
             if (storeID != null) {
                 val comments = commentRepository.getAll(storeID)
@@ -69,7 +70,7 @@ fun Route.storeRoute(
         }
 
         post("GetPostList") {
-            val data = call.receive<PostRequest>()
+            val data = call.receive<PostDTO>()
             val storeID = data.storeID
             if (storeID != null) {
                 val posts = postRepository.getAll(storeID)

@@ -2,16 +2,17 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Favorites
-import me.lazy_assedninja.db.Stores
-import me.lazy_assedninja.db.Tags
-import me.lazy_assedninja.dto.Favorite
-import me.lazy_assedninja.dto.Store
+import me.lazy_assedninja.po.Favorites
+import me.lazy_assedninja.po.Stores
+import me.lazy_assedninja.po.Tags
+import me.lazy_assedninja.vo.Favorite
+import me.lazy_assedninja.vo.Store
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class FavoriteRepository {
+
     fun insert(data: Favorite) {
         transaction {
             Favorites.insert {

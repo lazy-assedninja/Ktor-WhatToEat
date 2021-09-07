@@ -2,8 +2,8 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Posts
-import me.lazy_assedninja.dto.Post
+import me.lazy_assedninja.po.Posts
+import me.lazy_assedninja.vo.Post
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class PostRepository {
+
     fun insert(data: Post) {
         transaction {
             Posts.insert {

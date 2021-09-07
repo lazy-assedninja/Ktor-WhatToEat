@@ -8,6 +8,7 @@ import io.ktor.routing.*
 import java.io.File
 
 fun Route.fileRoute() {
+
     route("/File") {
         staticRootFolder = File("static")
 

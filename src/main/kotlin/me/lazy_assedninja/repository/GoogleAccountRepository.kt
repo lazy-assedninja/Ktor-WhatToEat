@@ -1,8 +1,8 @@
 package me.lazy_assedninja.repository
 
-import me.lazy_assedninja.db.GoogleAccounts
-import me.lazy_assedninja.db.Users
-import me.lazy_assedninja.dto.GoogleAccount
+import me.lazy_assedninja.po.GoogleAccounts
+import me.lazy_assedninja.po.Users
+import me.lazy_assedninja.vo.GoogleAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class GoogleAccountRepository {
+
     fun bind(userID: Int, data: GoogleAccount) {
         transaction {
             val googleAccountID = GoogleAccounts.insertAndGetId {

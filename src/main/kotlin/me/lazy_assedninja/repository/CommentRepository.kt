@@ -2,15 +2,16 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Comments
-import me.lazy_assedninja.db.Stores
-import me.lazy_assedninja.db.Users
-import me.lazy_assedninja.dto.Comment
+import me.lazy_assedninja.po.Comments
+import me.lazy_assedninja.po.Stores
+import me.lazy_assedninja.po.Users
+import me.lazy_assedninja.vo.Comment
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class CommentRepository {
+
     fun insert(data: Comment) {
         transaction {
             Comments.insert {

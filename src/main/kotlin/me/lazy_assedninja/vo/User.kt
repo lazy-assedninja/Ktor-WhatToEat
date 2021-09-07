@@ -1,9 +1,10 @@
-package me.lazy_assedninja.dto
+package me.lazy_assedninja.vo
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
+
     val id: Int,
     val email: String,
     var password: String,

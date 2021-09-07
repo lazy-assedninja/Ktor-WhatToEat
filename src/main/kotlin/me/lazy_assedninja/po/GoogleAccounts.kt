@@ -1,9 +1,10 @@
-package me.lazy_assedninja.db
+package me.lazy_assedninja.po
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.jodatime.datetime
 
 object GoogleAccounts : IntIdTable() {
+
     val googleID = text("google_id").index()
     val email = text("email")
     val name = text("name")

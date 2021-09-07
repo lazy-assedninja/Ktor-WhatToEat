@@ -1,6 +1,7 @@
-package me.lazy_assedninja.dto
+package me.lazy_assedninja.vo
 
 data class Promotion(
+
     val id: Int,
     val title: String,
     val picture: String,

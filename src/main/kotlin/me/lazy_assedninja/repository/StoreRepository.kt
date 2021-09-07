@@ -2,10 +2,10 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Favorites
-import me.lazy_assedninja.db.Stores
-import me.lazy_assedninja.db.Tags
-import me.lazy_assedninja.dto.Store
+import me.lazy_assedninja.po.Favorites
+import me.lazy_assedninja.po.Stores
+import me.lazy_assedninja.po.Tags
+import me.lazy_assedninja.vo.Store
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
@@ -15,6 +15,7 @@ import org.joda.time.DateTime
 
 @Suppress("SENSELESS_COMPARISON")
 class StoreRepository {
+
     fun insert(tagID: Int?, data: Store) {
         transaction {
             Stores.insert {

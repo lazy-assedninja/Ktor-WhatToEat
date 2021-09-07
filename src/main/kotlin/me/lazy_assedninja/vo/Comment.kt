@@ -1,9 +1,10 @@
-package me.lazy_assedninja.dto
+package me.lazy_assedninja.vo
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Comment(
+
     val id: Int,
     val star: Float,
     val content: String,

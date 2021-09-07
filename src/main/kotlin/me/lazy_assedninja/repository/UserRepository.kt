@@ -1,17 +1,18 @@
 package me.lazy_assedninja.repository
 
-import me.lazy_assedninja.db.GoogleAccounts
+import me.lazy_assedninja.po.GoogleAccounts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Users
-import me.lazy_assedninja.dto.GoogleAccount
+import me.lazy_assedninja.po.Users
+import me.lazy_assedninja.vo.GoogleAccount
 import me.lazy_assedninja.vo.Role
-import me.lazy_assedninja.dto.User
+import me.lazy_assedninja.vo.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
 class UserRepository {
+
     fun insert(data: User) {
         val roleValue = when (data.role) {
             Role.Manager.type -> Role.Manager

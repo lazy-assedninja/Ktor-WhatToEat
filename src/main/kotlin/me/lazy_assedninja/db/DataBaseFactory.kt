@@ -1,7 +1,8 @@
 package me.lazy_assedninja.db
 
-import me.lazy_assedninja.dto.*
+import me.lazy_assedninja.po.*
 import me.lazy_assedninja.repository.*
+import me.lazy_assedninja.vo.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -10,6 +11,7 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class DataBaseFactory(private val db: Database) {
+
     constructor(user: String, password: String) : this(
         Database.connect(
             "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",

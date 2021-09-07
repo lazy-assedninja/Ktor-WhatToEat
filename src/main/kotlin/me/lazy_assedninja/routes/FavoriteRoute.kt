@@ -5,11 +5,12 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import me.lazy_assedninja.dto.Favorite
-import me.lazy_assedninja.dto.request.FavoriteRequest
+import me.lazy_assedninja.vo.Favorite
+import me.lazy_assedninja.dto.FavoriteDTO
 import me.lazy_assedninja.repository.FavoriteRepository
 
 fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteRepository()) {
+
     route("/Favorite") {
         post("AddToFavorite") {
             val data = call.receive<Favorite>()
@@ -18,7 +19,7 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
         }
 
         post("GetFavoriteList") {
-            val data = call.receive<FavoriteRequest>()
+            val data = call.receive<FavoriteDTO>()
             val userID = data.userID
             if (userID != null) {
                 val stores = favoriteRepository.getAll(userID)
@@ -29,7 +30,7 @@ fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteReposit
         }
 
         post("CancelFavorite") {
-            val data = call.receive<FavoriteRequest>()
+            val data = call.receive<FavoriteDTO>()
             val storeID = data.storeID
             val userID = data.userID
             if (storeID != null && userID != null) {

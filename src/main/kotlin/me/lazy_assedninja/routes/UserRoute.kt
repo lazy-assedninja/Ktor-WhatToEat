@@ -5,10 +5,10 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import me.lazy_assedninja.dto.GoogleAccount
-import me.lazy_assedninja.dto.User
-import me.lazy_assedninja.dto.request.GoogleAccountRequest
-import me.lazy_assedninja.dto.request.UserRequest
+import me.lazy_assedninja.vo.GoogleAccount
+import me.lazy_assedninja.vo.User
+import me.lazy_assedninja.dto.GoogleAccountDTO
+import me.lazy_assedninja.dto.UserDTO
 import me.lazy_assedninja.repository.GoogleAccountRepository
 import me.lazy_assedninja.repository.UserRepository
 
@@ -16,6 +16,7 @@ fun Route.userRoute(
     userRepository: UserRepository = UserRepository(),
     googleAccountRepository: GoogleAccountRepository = GoogleAccountRepository()
 ) {
+
     route("/User") {
         post("SignUp") {
             val data = call.receive<User>()
@@ -50,7 +51,7 @@ fun Route.userRoute(
         }
 
         post("Login") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             val password = data.password
             if (email != null && password != null) {
@@ -70,7 +71,7 @@ fun Route.userRoute(
         }
 
         post("GoogleLogin") {
-            val data = call.receive<GoogleAccountRequest>()
+            val data = call.receive<GoogleAccountDTO>()
             val googleID = data.googleID
             if (googleID != null) {
                 val user = userRepository.getUserByGoogleAccountID(googleID)
@@ -85,7 +86,7 @@ fun Route.userRoute(
         }
 
         post("UpdatePassword") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             val oldPassword = data.oldPassword
             val newPassword = data.newPassword
@@ -108,7 +109,7 @@ fun Route.userRoute(
         }
 
         post("SendVerificationEmail") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             if (email != null) {
                 // ...
@@ -118,7 +119,7 @@ fun Route.userRoute(
         }
 
         post("ResetPassword") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             val verificationCode = data.verificationCode
             val newPassword = data.newPassword
@@ -130,7 +131,7 @@ fun Route.userRoute(
         }
 
         post("UpdatePermissionDeadline") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             if (email != null) {
                 // ...
@@ -140,7 +141,7 @@ fun Route.userRoute(
         }
 
         post("UpdateHeadPortrait") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             val picturePath = data.headPortrait
             if (email != null && picturePath != null) {
@@ -158,7 +159,7 @@ fun Route.userRoute(
         }
 
         post("GetHeadPortrait") {
-            val data = call.receive<UserRequest>()
+            val data = call.receive<UserDTO>()
             val email = data.email
             if (email != null) {
                 val user = userRepository.getUser(email)

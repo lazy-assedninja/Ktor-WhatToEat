@@ -2,9 +2,9 @@ package me.lazy_assedninja.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.lazy_assedninja.db.Promotions
-import me.lazy_assedninja.db.Stores
-import me.lazy_assedninja.dto.Promotion
+import me.lazy_assedninja.po.Promotions
+import me.lazy_assedninja.po.Stores
+import me.lazy_assedninja.vo.Promotion
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -13,6 +13,7 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 class PromotionRepository {
+
     private val formatter = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm")
 
     fun insert(data: Promotion) {

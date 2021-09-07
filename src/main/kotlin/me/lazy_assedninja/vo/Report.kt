@@ -1,6 +1,7 @@
-package me.lazy_assedninja.dto
+package me.lazy_assedninja.vo
 
 data class Report(
+
     val id: Int,
     val content: String,
     val createTime: String,

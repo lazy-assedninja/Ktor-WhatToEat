@@ -1,15 +1,16 @@
-package me.lazy_assedninja.db
+package me.lazy_assedninja.po
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Favorites : IntIdTable() {
-    val createTime = datetime("create_time")
-    val updateTime = datetime("update_time")
+object Reports : IntIdTable() {
 
-    val userID = integer("user_id")
-        .references(Users.id, onDelete = ReferenceOption.NO_ACTION)
+    val content = text("content")
+    val createTime = datetime("create_time")
+
     val storeID = integer("store_id")
         .references(Stores.id, onDelete = ReferenceOption.NO_ACTION)
+    val userID = integer("user_id")
+        .references(Users.id, onDelete = ReferenceOption.NO_ACTION)
 }
