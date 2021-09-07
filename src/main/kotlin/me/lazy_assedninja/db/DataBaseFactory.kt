@@ -99,6 +99,7 @@ class DataBaseFactory(private val db: Database) {
                 name = "火樹銀花韓式燒烤",
                 address = "100台灣台北市中正區濟南路二段3之10號",
                 phone = "02 2321 2729",
+                picture = "File/Store/huo_shu_yin_hua.jpg",
                 latitude = "25.0416267",
                 longitude = "121.5270648"
             )
@@ -111,6 +112,7 @@ class DataBaseFactory(private val db: Database) {
                 name = "巧之味手工水餃 濟南店",
                 address = "100台灣台北市中正區濟南路二段6號",
                 phone = "02 2321 4693",
+                picture = "File/Store/qiao_zhi_wei.jpg",
                 latitude = "25.0412988",
                 longitude = "121.5268078"
             )
@@ -123,6 +125,7 @@ class DataBaseFactory(private val db: Database) {
                 name = "大嗑西式餐館",
                 address = "100台灣台北市中正區濟南路二段18-3號",
                 phone = "02 2394 8810",
+                picture = "File/Store/da_ke.jpg",
                 latitude = "25.040981",
                 longitude = "121.528242"
             )
@@ -135,6 +138,7 @@ class DataBaseFactory(private val db: Database) {
                 name = "Alleycat's Pizza",
                 address = "100台灣台北市中正區八德路一段1號",
                 phone = "02 2395 6006",
+                picture = "File/Store/alley_cats.jpg",
                 latitude = "25.0442106",
                 longitude = "121.5293415"
             )
@@ -165,7 +169,7 @@ class DataBaseFactory(private val db: Database) {
                 id = 0,
                 title = "test1",
                 picture = "picture/path",
-                discount = "80% off",
+                discount = "80%",
                 notice = "僅限內用",
                 deadline = "2021/07/19 08:00",
 
@@ -177,7 +181,7 @@ class DataBaseFactory(private val db: Database) {
                 id = 0,
                 title = "test1",
                 picture = "picture/path",
-                discount = "80% off",
+                discount = "80%",
                 notice = "僅限內用",
                 deadline = "2021/07/19 08:00",
 
