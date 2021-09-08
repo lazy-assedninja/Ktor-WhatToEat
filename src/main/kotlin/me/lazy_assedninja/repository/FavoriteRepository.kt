@@ -7,6 +7,7 @@ import me.lazy_assedninja.po.Stores
 import me.lazy_assedninja.po.Tags
 import me.lazy_assedninja.vo.Favorite
 import me.lazy_assedninja.vo.Store
+import me.lazy_assedninja.vo.Tag
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
@@ -31,8 +32,8 @@ class FavoriteRepository {
                     .innerJoin(Favorites)
                     .select { Favorites.userID eq userID }
                     .map { store ->
-                        val tag = store[Stores.tagID]?.let {
-                            store[Tags.name]
+                        val tag = store[Stores.tagID]?.let { tagID ->
+                            toTag(store, tagID)
                         }
                         toStore(store, tag)
                     }.toList()
@@ -46,7 +47,7 @@ class FavoriteRepository {
         }
     }
 
-    private fun toStore(row: ResultRow, tag: String?): Store = Store(
+    private fun toStore(row: ResultRow, tag: Tag?): Store = Store(
         id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
@@ -57,10 +58,16 @@ class FavoriteRepository {
         longitude = row[Stores.longitude],
         website = row[Stores.website],
         star = row[Stores.star],
-        createTime = row[Stores.createTime].toString("yyyy-MM-dd"),
-        updateTime = row[Stores.updateTime].toString("yyyy-MM-dd"),
+        createTime = row[Stores.createTime].toString(),
+        updateTime = row[Stores.updateTime].toString(),
 
-        tagName = tag,
-        isFavorite = true
+        isFavorite = true,
+
+        tag = tag
+    )
+
+    private fun toTag(row: ResultRow, tagID: Int): Tag = Tag(
+        id = tagID,
+        name = row[Tags.name]
     )
 }

@@ -100,8 +100,8 @@ class UserRepository {
         headPortrait = row[Users.headPortrait],
         role = row[Users.role].name,
         verificationCode = row[Users.verificationCode],
-        createTime = row[Users.createTime].toString("yyyy-MM-dd"),
-        updateTime = row[Users.updateTime].toString("yyyy-MM-dd"),
+        createTime = row[Users.createTime].toString(),
+        updateTime = row[Users.updateTime].toString(),
 
         googleAccount = googleAccount
     )
@@ -113,7 +113,7 @@ class UserRepository {
         email = row[GoogleAccounts.email],
         name = row[GoogleAccounts.name],
         pictureURL = row[GoogleAccounts.pictureURL],
-        createTime = row[GoogleAccounts.createTime].toString("yyyy-MM-dd"),
-        updateTime = row[GoogleAccounts.updateTime].toString("yyyy-MM-dd")
+        createTime = row[GoogleAccounts.createTime].toString(),
+        updateTime = row[GoogleAccounts.updateTime].toString()
     )
 }

@@ -61,7 +61,6 @@ class DataBaseFactory(private val db: Database) {
                 createTime = null,
                 updateTime = null,
 
-                isBounded = false,
                 googleAccount = null
             )
         )
@@ -77,7 +76,6 @@ class DataBaseFactory(private val db: Database) {
                 createTime = null,
                 updateTime = null,
 
-                isBounded = false,
                 googleAccount = null
             )
         )
