@@ -18,7 +18,7 @@ fun Route.userRoute(
 ) {
 
     route("/User") {
-        post("SignUp") {
+        post("Register") {
             val data = call.receive<User>()
             val checkIfExist = userRepository.getUser(data.email) == null
             if (checkIfExist) {
