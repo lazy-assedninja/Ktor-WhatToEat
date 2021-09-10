@@ -53,7 +53,7 @@ class CommentRepository {
         id = row[Comments.id].value,
         star = row[Comments.star],
         content = row[Comments.content],
-        createTime = row[Comments.createTime].toString(),
+        createTime = row[Comments.createTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         storeID = row[Comments.storeID],
         userID = row[Users.id].value,

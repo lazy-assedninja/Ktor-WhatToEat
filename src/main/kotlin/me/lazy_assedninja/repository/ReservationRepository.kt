@@ -63,8 +63,8 @@ class ReservationRepository {
         phone = row[Reservations.phone],
         amount = row[Reservations.amount],
         time = row[Reservations.time],
-        createTime = row[Reservations.createTime].toString(),
-        updateTime = row[Reservations.updateTime].toString(),
+        createTime = row[Reservations.createTime].toString("yyyy-MM-dd HH:mm:ss"),
+        updateTime = row[Reservations.updateTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         storeID = row[Reservations.storeID],
         storeName = row[Stores.name],
@@ -77,8 +77,8 @@ class ReservationRepository {
         phone = row[Reservations.phone],
         amount = row[Reservations.amount],
         time = row[Reservations.time],
-        createTime = row[Reservations.createTime].toString(),
-        updateTime = row[Reservations.updateTime].toString(),
+        createTime = row[Reservations.createTime].toString("yyyy-MM-dd HH:mm:ss"),
+        updateTime = row[Reservations.updateTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         storeID = row[Reservations.storeID],
         userID = row[Reservations.userID],

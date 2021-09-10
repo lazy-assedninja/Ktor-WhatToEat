@@ -42,7 +42,7 @@ class CustomServiceRepository {
     private fun toReport(row: ResultRow): Report = Report(
         id = row[Reports.id].value,
         content = row[Reports.content],
-        createTime = row[Reports.createTime].toString(),
+        createTime = row[Reports.createTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         storeID = row[Reports.storeID],
         storeName = row[Stores.name],

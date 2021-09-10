@@ -113,7 +113,7 @@ class UserRepository {
         email = row[GoogleAccounts.email],
         name = row[GoogleAccounts.name],
         pictureURL = row[GoogleAccounts.pictureURL],
-        createTime = row[GoogleAccounts.createTime].toString(),
-        updateTime = row[GoogleAccounts.updateTime].toString()
+        createTime = row[GoogleAccounts.createTime].toString("yyyy-MM-dd HH:mm:ss"),
+        updateTime = row[GoogleAccounts.updateTime].toString("yyyy-MM-dd HH:mm:ss")
     )
 }

@@ -49,7 +49,7 @@ class PromotionRepository {
         picture = row[Promotions.picture],
         discount = row[Promotions.discount],
         notice = row[Promotions.notice],
-        deadline = row[Promotions.deadline].toString("yyyy/MM/dd HH:mm"),
+        deadline = row[Promotions.deadline].toString("yyyy-MM-dd HH"),
 
         storeID = row[Promotions.storeID],
         storeName = row[Stores.name]

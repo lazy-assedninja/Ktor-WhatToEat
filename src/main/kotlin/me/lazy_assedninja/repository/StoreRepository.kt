@@ -81,8 +81,8 @@ class StoreRepository {
         longitude = row[Stores.longitude],
         website = row[Stores.website],
         star = row[Stores.star],
-        createTime = row[Stores.createTime].toString(),
-        updateTime = row[Stores.updateTime].toString(),
+        createTime = row[Stores.createTime].toString("yyyy-MM-dd HH:mm:ss"),
+        updateTime = row[Stores.updateTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         isFavorite = isFavorite
     )

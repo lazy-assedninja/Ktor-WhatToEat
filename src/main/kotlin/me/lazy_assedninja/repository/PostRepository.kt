@@ -39,7 +39,7 @@ class PostRepository {
         id = row[Posts.id].value,
         title = row[Posts.title],
         content = row[Posts.content],
-        createTime = row[Posts.createTime].toString(),
+        createTime = row[Posts.createTime].toString("yyyy-MM-dd HH:mm:ss"),
 
         storeID = row[Posts.storeID]
     )
