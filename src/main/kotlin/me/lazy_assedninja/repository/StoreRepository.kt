@@ -6,6 +6,7 @@ import me.lazy_assedninja.po.Favorites
 import me.lazy_assedninja.po.Stores
 import me.lazy_assedninja.po.Tags
 import me.lazy_assedninja.vo.Store
+import me.lazy_assedninja.vo.Tag
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
@@ -47,7 +48,7 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.tagID eq tagID }
-                    .map { store -> toStore(store, store[Favorites.id] != null) }
+                    .map { store -> toStore(store, store[Favorites.id] != null, null) }
                     .toList()
             }
         }
@@ -64,13 +65,18 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.name like keyword }
-                    .map { store -> toStore(store, store[Favorites.id] != null) }
+                    .map { store ->
+                        val tag = store[Stores.tagID]?.let { tagID ->
+                            toTag(store, tagID)
+                        }
+                        toStore(store, store[Favorites.id] != null, tag)
+                    }
                     .toList()
             }
         }
     }
 
-    private fun toStore(row: ResultRow, isFavorite: Boolean? = false): Store = Store(
+    private fun toStore(row: ResultRow, isFavorite: Boolean? = false, tag: Tag?): Store = Store(
         id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
@@ -84,6 +90,13 @@ class StoreRepository {
         createTime = row[Stores.createTime].toString("yyyy-MM-dd HH:mm:ss"),
         updateTime = row[Stores.updateTime].toString("yyyy-MM-dd HH:mm:ss"),
 
-        isFavorite = isFavorite
+        isFavorite = isFavorite,
+
+        tag = tag
+    )
+
+    private fun toTag(row: ResultRow, tagID: Int): Tag = Tag(
+        id = tagID,
+        name = row[Tags.name]
     )
 }
