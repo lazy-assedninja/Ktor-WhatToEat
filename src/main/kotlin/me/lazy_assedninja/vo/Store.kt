@@ -20,5 +20,5 @@ data class Store(
 
     val isFavorite: Boolean? = null,
 
-    val tag: Tag? = null
+    val tagID: Int? = null
 )

@@ -6,7 +6,6 @@ import me.lazy_assedninja.po.Favorites
 import me.lazy_assedninja.po.Stores
 import me.lazy_assedninja.po.Tags
 import me.lazy_assedninja.vo.Store
-import me.lazy_assedninja.vo.Tag
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
@@ -48,7 +47,7 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.tagID eq tagID }
-                    .map { store -> toStore(store, store[Favorites.id] != null, null) }
+                    .map { store -> toStore(store, store[Favorites.id] != null) }
                     .toList()
             }
         }
@@ -65,18 +64,13 @@ class StoreRepository {
                         Favorites.storeID,
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.name like keyword }
-                    .map { store ->
-                        val tag = store[Stores.tagID]?.let { tagID ->
-                            toTag(store, tagID)
-                        }
-                        toStore(store, store[Favorites.id] != null, tag)
-                    }
+                    .map { store -> toStore(store, store[Favorites.id] != null) }
                     .toList()
             }
         }
     }
 
-    private fun toStore(row: ResultRow, isFavorite: Boolean? = false, tag: Tag?): Store = Store(
+    private fun toStore(row: ResultRow, isFavorite: Boolean? = false): Store = Store(
         id = row[Stores.id].value,
         placeID = row[Stores.placeID],
         name = row[Stores.name],
@@ -92,11 +86,6 @@ class StoreRepository {
 
         isFavorite = isFavorite,
 
-        tag = tag
-    )
-
-    private fun toTag(row: ResultRow, tagID: Int): Tag = Tag(
-        id = tagID,
-        name = row[Tags.name]
+        tagID = row[Stores.tagID]
     )
 }
