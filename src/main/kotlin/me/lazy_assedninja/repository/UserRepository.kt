@@ -86,10 +86,19 @@ class UserRepository {
                     it[password] = data.password
                     it[name] = data.name
                     it[headPortrait] = data.headPortrait
+                    it[verificationCode] = data.verificationCode
                     it[updateTime] = DateTime.now()
                 }
             }
         }
+    }
+
+    fun getVerificationCode(): String {
+        var verificationCode = ""
+        for (i in 1..6) {
+            verificationCode += (0..9).random()
+        }
+        return verificationCode
     }
 
     private fun toUser(row: ResultRow, googleAccount: GoogleAccount?): User = User(

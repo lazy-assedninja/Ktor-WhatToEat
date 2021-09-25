@@ -3,7 +3,7 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 val exposedVersion: String by project
 val h2DatabaseVersion: String by project
-val dateTimeVersion: String by project
+val commonsEmailVersion: String by project
 
 plugins {
     application
@@ -44,6 +44,9 @@ dependencies {
 
     // H2 Database
     implementation("com.h2database:h2:$h2DatabaseVersion")
+
+    // Commons Email
+    implementation("org.apache.commons:commons-email:$commonsEmailVersion")
 
     // Test
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")

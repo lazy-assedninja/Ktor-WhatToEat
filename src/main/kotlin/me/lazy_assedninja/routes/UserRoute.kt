@@ -11,8 +11,12 @@ import me.lazy_assedninja.dto.GoogleAccountDTO
 import me.lazy_assedninja.dto.UserDTO
 import me.lazy_assedninja.repository.GoogleAccountRepository
 import me.lazy_assedninja.repository.UserRepository
+import org.apache.commons.mail.DefaultAuthenticator
+import org.apache.commons.mail.SimpleEmail
 
 fun Route.userRoute(
+    emailAccount: String,
+    emailPassword: String,
     userRepository: UserRepository = UserRepository(),
     googleAccountRepository: GoogleAccountRepository = GoogleAccountRepository()
 ) {
@@ -85,7 +89,7 @@ fun Route.userRoute(
             }
         }
 
-        post("UpdatePassword") {
+        post("ResetPassword") {
             val data = call.receive<UserDTO>()
             val email = data.email
             val oldPassword = data.oldPassword
@@ -108,23 +112,53 @@ fun Route.userRoute(
             }
         }
 
-        post("SendVerificationEmail") {
+        post("SendVerificationCode") {
             val data = call.receive<UserDTO>()
             val email = data.email
             if (email != null) {
-                // ...
+                val user = userRepository.getUser(email)
+                val verificationCode = userRepository.getVerificationCode()
+                if (user != null) {
+                    SimpleEmail().also {
+                        it.hostName = "smtp.gmail.com"
+                        it.isSSLOnConnect = true
+                        it.sslSmtpPort = "465"
+                        it.subject = "WhatToEat Server"
+                        it.setAuthenticator(DefaultAuthenticator(emailAccount, emailPassword))
+                        it.setFrom(emailAccount)
+                        it.setMsg("Your verification code is $verificationCode.")
+                        it.addTo(email)
+                        it.send()
+                    }
+                    user.verificationCode = verificationCode
+                    userRepository.update(user)
+                    call.respond(mapOf("result" to "Success."))
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
+                }
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
 
-        post("ResetPassword") {
+        post("ForgetPassword") {
             val data = call.receive<UserDTO>()
             val email = data.email
             val verificationCode = data.verificationCode
             val newPassword = data.newPassword
             if (email != null && verificationCode != null && newPassword != null) {
-                // ...
+                val user = userRepository.getUser(email)
+                if (user != null) {
+                    if (user.verificationCode == verificationCode) {
+                        user.password = newPassword
+                        userRepository.update(user)
+                        call.respond(mapOf("result" to "Success."))
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError, "Verification Code wrong.")
+                    }
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
+                }
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
