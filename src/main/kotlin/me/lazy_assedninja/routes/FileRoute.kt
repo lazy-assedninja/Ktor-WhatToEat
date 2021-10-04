@@ -16,13 +16,17 @@ fun Route.fileRoute() {
             files("image/store")
         }
 
+        static("User") {
+            files("image/user")
+        }
+
         post("Upload") {
             val multipartData = call.receiveMultipart()
             multipartData.forEachPart { part ->
                 if (part is PartData.FileItem) {
                     val fileName = part.originalFileName as String
                     val fileBytes = part.streamProvider().readBytes()
-                    File("image/$fileName").writeBytes(fileBytes)
+                    File("static/image/user/$fileName").writeBytes(fileBytes)
                 }
             }
             call.respond(call.respond(mapOf("result" to "Success.")))
