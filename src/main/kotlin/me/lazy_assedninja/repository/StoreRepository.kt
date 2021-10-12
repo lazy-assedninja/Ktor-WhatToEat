@@ -6,10 +6,7 @@ import me.lazy_assedninja.po.Favorites
 import me.lazy_assedninja.po.Stores
 import me.lazy_assedninja.po.Tags
 import me.lazy_assedninja.vo.Store
-import org.jetbrains.exposed.sql.JoinType
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
@@ -36,7 +33,7 @@ class StoreRepository {
         }
     }
 
-    suspend fun getAll(userID: Int, tagID: Int): List<Store> {
+    suspend fun getAllWithTag(userID: Int, tagID: Int): List<Store> {
         return withContext(Dispatchers.IO) {
             transaction {
                 Stores.leftJoin(Tags)
@@ -48,6 +45,23 @@ class StoreRepository {
                         additionalConstraint = { Favorites.userID eq userID })
                     .select { Stores.tagID eq tagID }
                     .map { store -> toStore(store, store[Favorites.id] != null) }
+                    .toList()
+            }
+        }
+    }
+
+    suspend fun getAll(userID: Int): List<Store> {
+        return withContext(Dispatchers.IO) {
+            transaction {
+                Stores.leftJoin(Tags)
+                    .join(
+                        Favorites,
+                        JoinType.LEFT,
+                        Stores.id,
+                        Favorites.storeID,
+                        additionalConstraint = { Favorites.userID eq userID })
+                    .selectAll()
+                    .map { store -> toStore(store) }
                     .toList()
             }
         }

@@ -27,7 +27,18 @@ fun Route.storeRoute(
             val userID = data.userID
             val tagID = data.tagID
             if (userID != null && tagID != null) {
-                val stores = storeRepository.getAll(userID, tagID)
+                val stores = storeRepository.getAllWithTag(userID, tagID)
+                call.respond(stores)
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
+            }
+        }
+
+        post("GetAllStores") {
+            val data = call.receive<StoreDTO>()
+            val userID = data.userID
+            if (userID != null) {
+                val stores = storeRepository.getAll(userID)
                 call.respond(stores)
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
