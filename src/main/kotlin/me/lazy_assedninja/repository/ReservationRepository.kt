@@ -59,7 +59,7 @@ class ReservationRepository {
 
     private fun toUserReservation(row: ResultRow): Reservation = Reservation(
         id = row[Reservations.id].value,
-        name = row[Reservations.phone],
+        name = row[Reservations.name],
         phone = row[Reservations.phone],
         amount = row[Reservations.amount],
         time = row[Reservations.time],
