@@ -12,6 +12,6 @@ data class Comment(
 
     val storeID: Int,
     val userID: Int,
-    val userName: String?,
-    val userPicture: String?
+    val userName: String? = null,
+    val userPicture: String? = null
 )
