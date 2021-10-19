@@ -44,8 +44,9 @@ class DataBaseFactory(private val db: Database) {
 
     fun createTestData() {
         val userRepository = UserRepository()
-        val storeRepository = StoreRepository()
         val tagRepository = TagRepository()
+        val storeRepository = StoreRepository()
+        val commentRepository = CommentRepository()
         val favoriteRepository = FavoriteRepository()
         val promotionRepository = PromotionRepository()
 
@@ -185,6 +186,116 @@ class DataBaseFactory(private val db: Database) {
                 notice = "僅限內用",
                 deadline = "2021/07/19 08:00",
 
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 4.5f,
+                content = "test1",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 3.3f,
+                content = "test2",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
+                storeID = 1
+            )
+        )
+        commentRepository.insert(
+            Comment(
+                id = 0,
+                star = 2f,
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                userID = 1,
                 storeID = 1
             )
         )
