@@ -10,7 +10,7 @@ object Reports : IntIdTable() {
     val createTime = datetime("create_time")
 
     val storeID = integer("store_id")
-        .references(Stores.id, onDelete = ReferenceOption.NO_ACTION)
+        .references(Stores.id, onDelete = ReferenceOption.NO_ACTION).nullable()
     val userID = integer("user_id")
         .references(Users.id, onDelete = ReferenceOption.NO_ACTION)
 }

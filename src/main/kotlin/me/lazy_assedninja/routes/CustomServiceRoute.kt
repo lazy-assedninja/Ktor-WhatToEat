@@ -13,7 +13,7 @@ fun Route.customServiceRoute(customServiceRepository: CustomServiceRepository = 
         post("CreateReport") {
             val data = call.receive<Report>()
             customServiceRepository.insertReport(data)
-            call.respond(mapOf("result" to "1"))
+            call.respond(mapOf("result" to "Success."))
         }
 
         get("GetReportList") {

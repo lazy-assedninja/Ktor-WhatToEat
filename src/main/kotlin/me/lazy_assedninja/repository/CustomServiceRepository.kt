@@ -29,7 +29,7 @@ class CustomServiceRepository {
     suspend fun getAllReports(): List<Report> {
         return withContext(Dispatchers.IO) {
             transaction {
-                Reports.innerJoin(Stores)
+                Reports.leftJoin(Stores)
                     .innerJoin(Users)
                     .selectAll()
                     .map {

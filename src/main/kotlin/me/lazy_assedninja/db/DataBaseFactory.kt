@@ -47,6 +47,7 @@ class DataBaseFactory(private val db: Database) {
         val tagRepository = TagRepository()
         val storeRepository = StoreRepository()
         val commentRepository = CommentRepository()
+        val postRepository = PostRepository()
         val favoriteRepository = FavoriteRepository()
         val promotionRepository = PromotionRepository()
 
@@ -296,6 +297,46 @@ class DataBaseFactory(private val db: Database) {
                 createTime = "2021/07/19 08:00",
 
                 userID = 1,
+                storeID = 1
+            )
+        )
+        postRepository.insert(
+            Post(
+                id = 0,
+                title = "test1",
+                content = "test1",
+                createTime = "2021/07/19 08:00",
+
+                storeID = 1
+            )
+        )
+        postRepository.insert(
+            Post(
+                id = 0,
+                title = "test2",
+                content = "test2",
+                createTime = "2021/07/19 08:00",
+
+                storeID = 1
+            )
+        )
+        postRepository.insert(
+            Post(
+                id = 0,
+                title = "test3",
+                content = "test3",
+                createTime = "2021/07/19 08:00",
+
+                storeID = 1
+            )
+        )
+        postRepository.insert(
+            Post(
+                id = 0,
+                title = "test4",
+                content = "test4",
+                createTime = "2021/07/19 08:00",
+
                 storeID = 1
             )
         )
