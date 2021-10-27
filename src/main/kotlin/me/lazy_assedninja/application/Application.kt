@@ -38,9 +38,6 @@ fun Application.module() {
     val db = DataBaseFactory(url, driver, user, password)
     db.init()
 
-    // Test Data
-    db.createTestData()
-
     val emailAccount =  environment.config.property("ktor.email.account").getString()
     val emailPassword =  environment.config.property("ktor.email.password").getString()
     routing {
