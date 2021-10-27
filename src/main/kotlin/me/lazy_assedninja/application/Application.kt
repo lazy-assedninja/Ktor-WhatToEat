@@ -31,9 +31,11 @@ fun Application.module() {
     configureRouting()
 
     // Database Init
+    val url = environment.config.property("ktor.database.url").getString()
+    val driver = environment.config.property("ktor.database.driver").getString()
     val user = environment.config.property("ktor.database.user").getString()
     val password = environment.config.property("ktor.database.password").getString()
-    val db = DataBaseFactory(user, password)
+    val db = DataBaseFactory(url, driver, user, password)
     db.init()
 
     // Test Data

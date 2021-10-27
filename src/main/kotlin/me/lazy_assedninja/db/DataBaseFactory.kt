@@ -12,10 +12,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class DataBaseFactory(private val db: Database) {
 
-    constructor(user: String, password: String) : this(
+    constructor(url: String, driver: String, user: String, password: String) : this(
         Database.connect(
-            "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",
-            driver = "org.h2.Driver",
+            url = url,
+            driver = driver,
             user = user,
             password = password
         )

@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Reservations : IntIdTable() {
+object Reservations : IntIdTable(name = "reservation") {
 
     val name = text("name")
     val phone = text("phone")

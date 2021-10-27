@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Favorites : IntIdTable() {
+object Favorites : IntIdTable(name = "favorite") {
 
     val createTime = datetime("create_time")
     val updateTime = datetime("update_time")

@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Reports : IntIdTable() {
+object Reports : IntIdTable(name = "report") {
 
     val content = text("content")
     val createTime = datetime("create_time")

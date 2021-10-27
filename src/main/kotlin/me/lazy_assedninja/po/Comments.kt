@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Comments : IntIdTable() {
+object Comments : IntIdTable(name = "comment") {
 
     val star = float("start")
     val content = text("content")

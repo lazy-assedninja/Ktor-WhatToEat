@@ -5,7 +5,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.jodatime.datetime
 
-object Users : IntIdTable() {
+object Users : IntIdTable(name = "user") {
 
     val email = text("email").index()
     val password = text("password")

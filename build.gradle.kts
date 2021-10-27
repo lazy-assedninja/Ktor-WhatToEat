@@ -3,6 +3,7 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 val exposedVersion: String by project
 val h2DatabaseVersion: String by project
+val mysqlDatabaseVersion: String by project
 val commonsEmailVersion: String by project
 
 plugins {
@@ -42,8 +43,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jodatime:$exposedVersion")
 
-    // H2 Database
+    // Database
     implementation("com.h2database:h2:$h2DatabaseVersion")
+    implementation("mysql:mysql-connector-java:$mysqlDatabaseVersion")
 
     // Commons Email
     implementation("org.apache.commons:commons-email:$commonsEmailVersion")
