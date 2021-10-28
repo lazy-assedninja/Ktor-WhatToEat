@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.jodatime.datetime
 
 object Users : IntIdTable(name = "user") {
 
-    val email = text("email").index()
+    val email = varchar("email", 100).index()
     val password = text("password")
     val name = text("name")
     val headPortrait = text("head_portrait")
