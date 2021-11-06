@@ -28,8 +28,6 @@ fun Application.module() {
         }
     }
 
-    configureRouting()
-
     // Database Init
     val url = environment.config.property("ktor.database.url").getString()
     val driver = environment.config.property("ktor.database.driver").getString()
