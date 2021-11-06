@@ -8,7 +8,6 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import me.lazy_assedninja.routes.*
 import me.lazy_assedninja.db.DataBaseFactory
-import me.lazy_assedninja.plugins.configureRouting
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
