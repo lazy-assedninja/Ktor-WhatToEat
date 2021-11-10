@@ -1,4 +1,5 @@
 # Ktor-WhatToEat
+Refactor the university project.
 
 ## Environment
 * Ubuntu 16.04.7 LTS
