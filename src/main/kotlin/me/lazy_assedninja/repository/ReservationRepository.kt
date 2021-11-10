@@ -13,6 +13,9 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handles Reservation instance.
+ */
 class ReservationRepository {
 
     fun insert(data: Reservation) {

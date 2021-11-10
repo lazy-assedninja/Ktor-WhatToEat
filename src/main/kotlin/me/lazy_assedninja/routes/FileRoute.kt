@@ -7,6 +7,9 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import java.io.File
 
+/**
+ * Define APIs that related to file.
+ */
 fun Route.fileRoute() {
 
     route("/File") {

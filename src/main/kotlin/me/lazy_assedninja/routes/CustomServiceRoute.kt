@@ -7,6 +7,9 @@ import io.ktor.routing.*
 import me.lazy_assedninja.vo.Report
 import me.lazy_assedninja.repository.CustomServiceRepository
 
+/**
+ * Define APIs that related to custom service.
+ */
 fun Route.customServiceRoute(customServiceRepository: CustomServiceRepository = CustomServiceRepository()) {
 
     route("/CustomService") {

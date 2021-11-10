@@ -11,6 +11,9 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handles Favorite instance.
+ */
 class FavoriteRepository {
 
     fun insert(data: Favorite) {

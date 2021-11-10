@@ -14,6 +14,9 @@ import me.lazy_assedninja.repository.UserRepository
 import org.apache.commons.mail.DefaultAuthenticator
 import org.apache.commons.mail.SimpleEmail
 
+/**
+ * Define APIs that related to User.
+ */
 fun Route.userRoute(
     emailAccount: String,
     emailPassword: String,
@@ -156,53 +159,6 @@ fun Route.userRoute(
                     } else {
                         call.respond(HttpStatusCode.InternalServerError, "Verification Code wrong.")
                     }
-                } else {
-                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
-                }
-            } else {
-                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
-            }
-        }
-
-        post("UpdatePermissionDeadline") {
-            val data = call.receive<UserDTO>()
-            val email = data.email
-            if (email != null) {
-                // ...
-            } else {
-                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
-            }
-        }
-
-        post("UpdateHeadPortrait") {
-            val data = call.receive<UserDTO>()
-            val email = data.email
-            val picturePath = data.headPortrait
-            if (email != null && picturePath != null) {
-                val user = userRepository.getUser(email)
-                if (user != null) {
-                    user.headPortrait = picturePath
-                    userRepository.update(user)
-                    call.respond(mapOf("result" to "Success."))
-                } else {
-                    call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
-                }
-            } else {
-                call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
-            }
-        }
-
-        post("GetHeadPortrait") {
-            val data = call.receive<UserDTO>()
-            val email = data.email
-            if (email != null) {
-                val user = userRepository.getUser(email)
-                if (user != null) {
-                    call.respond(
-                        mapOf(
-                            "headPortrait" to "https://${call.request.local.host}:${call.request.local.port}/${user.headPortrait}"
-                        )
-                    )
                 } else {
                     call.respond(HttpStatusCode.InternalServerError, "User Not Found.")
                 }

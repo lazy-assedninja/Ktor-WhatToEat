@@ -9,6 +9,9 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handles GoogleAccount instance.
+ */
 class GoogleAccountRepository {
 
     fun bind(userID: Int, data: GoogleAccount) {

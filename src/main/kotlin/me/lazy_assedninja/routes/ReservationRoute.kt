@@ -9,6 +9,9 @@ import me.lazy_assedninja.vo.Reservation
 import me.lazy_assedninja.dto.ReservationDTO
 import me.lazy_assedninja.repository.ReservationRepository
 
+/**
+ * Define APIs that related to Reservation.
+ */
 fun Route.reservationRoute(reservationRepository: ReservationRepository = ReservationRepository()) {
 
     route("/Reservation") {
@@ -29,8 +32,6 @@ fun Route.reservationRoute(reservationRepository: ReservationRepository = Reserv
                 call.respond(HttpStatusCode.InternalServerError, "Data can't be empty.")
             }
         }
-
-        post("GetReservationInformation") { }
 
         post("CancelReservation") {
             val data = call.receive<ReservationDTO>()

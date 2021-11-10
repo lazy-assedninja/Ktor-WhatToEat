@@ -14,6 +14,9 @@ import me.lazy_assedninja.repository.CommentRepository
 import me.lazy_assedninja.repository.PostRepository
 import me.lazy_assedninja.repository.StoreRepository
 
+/**
+ * Define APIs that related to Store.
+ */
 @Suppress("SENSELESS_COMPARISON")
 fun Route.storeRoute(
     storeRepository: StoreRepository = StoreRepository(),

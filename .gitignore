@@ -1,9 +1,15 @@
-build/
-.gradle/
-out/
-
-.idea/
+# Mac OS
 .DS_Store
 
+# Gradle
+build/
+.gradle/
+
+# JetBrains IDE
+.idea/
+
+# Configurations
 **/application.conf
+
+# Unnecessary
 static/image/user/*

@@ -12,6 +12,9 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handle custom service related instances.
+ */
 class CustomServiceRepository {
 
     fun insertReport(data: Report) {

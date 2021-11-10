@@ -12,6 +12,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
+/**
+ * Repository that handles Promotion instance.
+ */
 class PromotionRepository {
 
     private val formatter = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm")

@@ -10,6 +10,9 @@ import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
+/**
+ * Database configurations.
+ */
 class DataBaseFactory(private val db: Database) {
 
     constructor(url: String, driver: String, user: String, password: String) : this(

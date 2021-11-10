@@ -35,7 +35,7 @@ dependencies {
     // Serialization
     implementation ("io.ktor:ktor-serialization:$ktorVersion")
 
-    // Json
+    // Gson
     implementation("io.ktor:ktor-gson:$ktorVersion")
 
     // Exposed

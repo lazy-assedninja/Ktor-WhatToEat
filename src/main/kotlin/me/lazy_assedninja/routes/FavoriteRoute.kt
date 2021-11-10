@@ -9,6 +9,9 @@ import me.lazy_assedninja.vo.Favorite
 import me.lazy_assedninja.dto.FavoriteDTO
 import me.lazy_assedninja.repository.FavoriteRepository
 
+/**
+ * Define APIs that related to Favorite.
+ */
 fun Route.favoriteRoute(favoriteRepository: FavoriteRepository = FavoriteRepository()) {
 
     route("/Favorite") {

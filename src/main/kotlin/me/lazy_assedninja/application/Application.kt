@@ -14,20 +14,22 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused")
 fun Application.module() {
 
-    install(ContentNegotiation) {
+    install(ContentNegotiation) { // Serializing/deserializing the content in the specific format.
+        // Init Gson plugin
         gson {
             setPrettyPrinting()
             disableHtmlEscaping()
         }
     }
-    install(DefaultHeaders)
-    install(StatusPages) {
+    install(DefaultHeaders) // Adds the standard Server and Date headers into each response.
+    install(StatusPages) { // Allows Ktor applications to respond appropriately to any failure state.
+        // Set exceptions to 500 status code and response error message.
         exception<Throwable> {
             call.respond(HttpStatusCode.InternalServerError, "${it.message}")
         }
     }
 
-    // Database Init
+    // Init database
     val url = environment.config.property("ktor.database.url").getString()
     val driver = environment.config.property("ktor.database.driver").getString()
     val user = environment.config.property("ktor.database.user").getString()
@@ -35,6 +37,7 @@ fun Application.module() {
     val db = DataBaseFactory(url, driver, user, password)
     db.init()
 
+    // Init APIs
     val emailAccount =  environment.config.property("ktor.email.account").getString()
     val emailPassword =  environment.config.property("ktor.email.password").getString()
     routing {

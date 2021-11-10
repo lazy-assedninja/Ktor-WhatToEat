@@ -10,6 +10,9 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handles Post instance.
+ */
 class PostRepository {
 
     fun insert(data: Post) {

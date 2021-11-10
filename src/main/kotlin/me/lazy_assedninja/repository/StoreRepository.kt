@@ -10,6 +10,9 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
+/**
+ * Repository that handle Store & Tag instance.
+ */
 @Suppress("SENSELESS_COMPARISON")
 class StoreRepository {
 
