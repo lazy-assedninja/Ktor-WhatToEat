@@ -7,7 +7,7 @@ Refactor the university project.
 * MySQL Server 5.7.3-log
 * JDK 1.8.0_302
 
-## Configuration
+## Configurations
 `EngineMain` starts a server with the selected engine and loads the application module specified in the external `PROJECT_NAME/src/main/resources/application.conf` file. 
 Besides modules to load, this file can include various server parameters. 
 ```
