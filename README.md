@@ -3,6 +3,8 @@ Refactor the university project.
 
 ## Environment
 * Ubuntu 16.04.7 LTS
+* MySQL Client 14.14
+* MySQL Server 5.7.3-log
 * JDK 1.8.0_302
 
 ## Configuration
