@@ -35,6 +35,6 @@ ktor {
 
 ## Run
 To run the project, execute the following command in repository's root directory:
-```shell
+```commandline
 ./gradlew run
 ```
