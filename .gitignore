@@ -9,7 +9,7 @@ build/
 .idea/
 
 # Configurations
-**/application.conf
+application.conf
 
 # Unnecessary
-static/image/user/*
+static/image/user/
